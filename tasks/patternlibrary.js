@@ -93,8 +93,6 @@ module.exports = function(grunt) {
       // Write the destination file.
       grunt.file.write(f.dest, src);
 
-      getCss(options.additionalCss);
-
       // Print a success message.
       grunt.log.writeln('File "' + f.dest + '" created.');
     });
