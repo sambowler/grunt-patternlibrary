@@ -44,21 +44,29 @@ module.exports = function(grunt) {
     }
 
     function processPattern(path, templatePath) {
-        var fileContents = grunt.file.read(path);
-        var frontMatter = yamlFrontMatter.loadFront(fileContents);
-        var template = grunt.file.read(templatePath);
-        var data = {
-          content: frontMatter.__content,
-          slug: getPatternSlug(path, frontMatter),
-        };
+      var fileContents = grunt.file.read(path);
+      var frontMatter = yamlFrontMatter.loadFront(fileContents);
 
-        delete frontMatter.slug;
-        delete frontMatter.__content;
+      if(typeof frontMatter.title === 'undefined') {
+        grunt.log.warn('"' + path + '" doesn\'t have a title');
+        return false;
+      }
 
-        // Carry the rest of the front matter data to the object
-        data = _.defaults(data, frontMatter);
+      var template = grunt.file.read(templatePath);
+      var data = {
+        content: frontMatter.__content,
+        slug: getPatternSlug(path, frontMatter),
+      };
 
-        return grunt.template.process(template, { data: data });
+      delete frontMatter.slug;
+      delete frontMatter.__content;
+
+      // Carry the rest of the front matter data to the object
+      data = _.defaults(data, frontMatter);
+
+      data['html'] = grunt.template.process(template, { data: data });
+
+      return data;
     }
 
     function getWrapperMarkup(template, patternsArray) {
@@ -85,7 +93,9 @@ module.exports = function(grunt) {
           return true;
         }
       }).map(function(path) {
-        patterns.push(processPattern(path, options.patternTemplate));
+        var patternData = processPattern(path, options.patternTemplate);
+
+        if(patternData) patterns.push(patternData);
       });
 
       var src = getWrapperMarkup(options.wrapperTemplate, patterns);
