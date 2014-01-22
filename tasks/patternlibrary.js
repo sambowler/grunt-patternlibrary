@@ -27,8 +27,16 @@ module.exports = function(grunt) {
     })();
     var wrapperTemplate = moduleRoot + '/templates/wrapper.html';
     var patternTemplate = moduleRoot + '/templates/pattern.html';
+    var bowerComponents = moduleRoot + '/bower_components';
     var options = this.options({
-      cssFiles: [],
+      include: [
+        {
+          src: bowerComponents,
+          dest:
+          flatten: true
+        }
+      ],
+      indexName: 'index.html',
       wrapperTemplate: wrapperTemplate,
       patternTemplate: patternTemplate
     });
@@ -101,7 +109,7 @@ module.exports = function(grunt) {
       var src = getWrapperMarkup(options.wrapperTemplate, patterns);
 
       // Write the destination file.
-      grunt.file.write(f.dest, src);
+      grunt.file.write(f.dest + '/' + options.indexName, src);
 
       // Print a success message.
       grunt.log.writeln('File "' + f.dest + '" created.');
