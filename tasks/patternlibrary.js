@@ -6,10 +6,7 @@
  * Copyright (c) 2014 Sam Bowler
  * Licensed under the MIT license.
  *
- * TODO: YAML front matter for each pattern
- * TODO: Class to each pattern wrapper
  * TODO: One pattern visible at a time (separate URLs for each)
- * TODO: HAML
  */
 module.exports = function(grunt) {
   'use strict';
