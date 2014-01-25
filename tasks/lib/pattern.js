@@ -20,13 +20,13 @@ module.exports = function(grunt) {
     var frontMatter = yamlFrontMatter.loadFront(fileContents);
 
     if(typeof frontMatter.title === 'undefined') {
-      grunt.log.warn('"' + path + '" doesn\'t have a title -- ignoring');
+      grunt.log.warn('"' + path + '" doesn\'t have a title -- ignoring this file.');
       return false;
     }
 
     var template = grunt.file.read(templatePath);
     var data = {
-      content: frontMatter.__content,
+      content: frontMatter.__content.trim(),
       slug: getPatternSlug(path, frontMatter),
     };
 

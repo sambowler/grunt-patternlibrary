@@ -31,6 +31,7 @@ module.exports = function(grunt) {
     wrapperTemplate: wrapperTemplate,
     patternTemplate: patternTemplate,
     indexName: 'index.html',
+    title: 'Pattern Library',
     include: [
       {
         src: bowerComponents,
@@ -48,9 +49,10 @@ module.exports = function(grunt) {
   };
 
   grunt.registerMultiTask('patternlibrary', 'Create a pattern library with a set of HTML files.', function() {
-    function getWrapperMarkup(template, patternsArray) {
+    function getWrapperMarkup(template, title, patternsArray) {
       var data = {
         data: {
+          title: title,
           patterns: patternsArray
         }
       };
@@ -64,6 +66,7 @@ module.exports = function(grunt) {
       var indexName = f.indexName || defaults.indexName;
       var patternTemplate = f.patternTemplate || defaults.patternTemplate;
       var wrapperTemplate = f.wrapperTemplate || defaults.wrapperTemplate;
+      var title = f.title || defaults.title;
       var includesArr = f.include ? defaults.include.concat(f.include) : defaults.include;
 
       f.src.filter(function(filepath) {
@@ -79,7 +82,7 @@ module.exports = function(grunt) {
         if(patternData) patterns.push(patternData);
       });
 
-      var markup = getWrapperMarkup(wrapperTemplate, patterns);
+      var markup = getWrapperMarkup(wrapperTemplate, title, patterns);
 
       grunt.file.write(f.dest + '/' + indexName, markup);
 
