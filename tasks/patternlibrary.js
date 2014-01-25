@@ -7,73 +7,47 @@
  * Licensed under the MIT license.
  *
  * TODO: One pattern visible at a time (separate URLs for each)
+ * TODO: Notes in patterns
  */
 module.exports = function(grunt) {
   'use strict';
 
-  var yamlFrontMatter = require('yaml-front-matter');
   var _ = require('lodash');
+  var moduleRoot = (function() {
+    var dirArr = __dirname.split('/');
+
+    dirArr.pop();
+
+    return dirArr.join('/');
+  })();
+  var pattern = require('./lib/pattern')(grunt);
+  var includes = require('./lib/includes')(grunt);
+  var wrapperTemplate = moduleRoot + '/templates/wrapper.html';
+  var patternTemplate = moduleRoot + '/templates/pattern.html';
+  var bowerComponents = moduleRoot + '/bower_components';
+  var css = moduleRoot + '/css';
+  var js = moduleRoot + '/js';
+  var defaults = {
+    wrapperTemplate: wrapperTemplate,
+    patternTemplate: patternTemplate,
+    indexName: 'index.html',
+    include: [
+      {
+        src: bowerComponents,
+        dest: 'bower_components'
+      },
+      {
+        src: css,
+        dest: 'css'
+      },
+      {
+        src: js,
+        dest: 'js'
+      }
+    ]
+  };
 
   grunt.registerMultiTask('patternlibrary', 'Create a pattern library with a set of HTML files.', function() {
-    var moduleRoot = (function() {
-      var dirArr = __dirname.split('/');
-
-      dirArr.pop();
-
-      return dirArr.join('/');
-    })();
-    var wrapperTemplate = moduleRoot + '/templates/wrapper.html';
-    var patternTemplate = moduleRoot + '/templates/pattern.html';
-    var bowerComponents = moduleRoot + '/bower_components';
-    var options = this.options({
-      include: [
-        {
-          src: bowerComponents,
-          dest:
-          flatten: true
-        }
-      ],
-      indexName: 'index.html',
-      wrapperTemplate: wrapperTemplate,
-      patternTemplate: patternTemplate
-    });
-
-    function getPatternSlug(path, data) {
-      if(data.hasOwnProperty('slug')) {
-        return data.slug;
-      } else {
-        var fileName = path.split('/').pop();
-
-        return fileName.split('.')[0];
-      }
-    }
-
-    function processPattern(path, templatePath) {
-      var fileContents = grunt.file.read(path);
-      var frontMatter = yamlFrontMatter.loadFront(fileContents);
-
-      if(typeof frontMatter.title === 'undefined') {
-        grunt.log.warn('"' + path + '" doesn\'t have a title');
-        return false;
-      }
-
-      var template = grunt.file.read(templatePath);
-      var data = {
-        content: frontMatter.__content,
-        slug: getPatternSlug(path, frontMatter),
-      };
-
-      delete frontMatter.slug;
-      delete frontMatter.__content;
-
-      // Carry the rest of the front matter data to the object
-      data = _.defaults(data, frontMatter);
-
-      data['html'] = grunt.template.process(template, { data: data });
-
-      return data;
-    }
-
     function getWrapperMarkup(template, patternsArray) {
       var data = {
         data: {
@@ -86,11 +60,13 @@ module.exports = function(grunt) {
 
     var patterns = [];
 
-    // Iterate over all specified file groups.
     this.files.forEach(function(f) {
-      // Concat specified files.
+      var indexName = f.indexName || defaults.indexName;
+      var patternTemplate = f.patternTemplate || defaults.patternTemplate;
+      var wrapperTemplate = f.wrapperTemplate || defaults.wrapperTemplate;
+      var includesArr = f.include ? defaults.include.concat(f.include) : defaults.include;
+
       f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
         if (!grunt.file.exists(filepath)) {
           grunt.log.warn('Source file "' + filepath + '" not found.');
           return false;
@@ -98,18 +74,18 @@ module.exports = function(grunt) {
           return true;
         }
       }).map(function(path) {
-        var patternData = processPattern(path, options.patternTemplate);
+        var patternData = pattern.process(path, patternTemplate);
 
         if(patternData) patterns.push(patternData);
       });
 
-      var src = getWrapperMarkup(options.wrapperTemplate, patterns);
+      var markup = getWrapperMarkup(wrapperTemplate, patterns);
 
-      // Write the destination file.
-      grunt.file.write(f.dest + '/' + options.indexName, src);
+      grunt.file.write(f.dest + '/' + indexName, markup);
 
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+      includes.process(f.dest, includesArr);
+
+      grunt.log.writeln('Patterns created in "' + f.dest + '".');
     });
   });
 
