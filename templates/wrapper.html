@@ -18,7 +18,7 @@
             <span class="icon-bar"></span>
           </button>
 
-          <a class="navbar-brand" href="#"><%= title %></a>
+          <a class="navbar-brand" href="#/"><%= title %></a>
         </div>
 
         <div class="collapse navbar-collapse" id="main-nav">
@@ -28,20 +28,35 @@
 
               <ul class="dropdown-menu">
                 <% _.forEach(patterns, function(pattern) { %>
-                  <li><a href="#/patterns/<%= pattern.slug %>"><%= pattern.title %></a></li>
+                  <li><a href="#/<%= pattern.slug %>"><%= pattern.title %></a></li>
                 <% }); %>
               </ul>
           </ul>
         </div>
       </nav>
 
-      <% _.forEach(patterns, function(pattern) { %>
-        <%= pattern.html %>
-      <% }); %>
+      <div class="pattern-listing">
+        <div class="list-group">
+          <% _.forEach(patterns, function(pattern) { %>
+            <a href="#/<%= pattern.slug %>" class="list-group-item">
+              <h4 class="list-group-item-heading"><%= pattern.title %></h4>
+              <p class="list-group-item-text"><%= pattern.note %></p>
+            </a>
+          <% }); %>
+        </div>
+      </div>
+
+      <div class="patterns">
+        <% _.forEach(patterns, function(pattern) { %>
+          <%= pattern.html %>
+        <% }); %>
+      </div>
     </div>
 
     <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/prism/prism.js"></script>
+    <script src="bower_components/pathjs/path.min.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.0.3",
-    "prism": "gh-pages"
+    "prism": "gh-pages",
+    "pathjs": "*"
   }
 }

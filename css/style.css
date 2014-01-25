@@ -1,2 +1,13 @@
-body {
+.patterns {
+  margin-top: 40px;
+}
+
+.pattern,
+.pattern-listing {
+  display: none;
+}
+
+.pattern.is-active,
+.pattern-listing.is-active {
+  display: block;
 }
