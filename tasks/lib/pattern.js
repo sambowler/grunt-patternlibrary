@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     }
   }
 
-  function process(path, templatePath) {
+  function process(path, templatePath, prefix) {
     var fileContents = grunt.file.read(path);
     var frontMatter = yamlFrontMatter.loadFront(fileContents);
 
@@ -28,6 +28,7 @@ module.exports = function(grunt) {
     var data = {
       content: frontMatter.__content.trim(),
       slug: getPatternSlug(path, frontMatter),
+      prefix: prefix
     };
 
     delete frontMatter.slug;

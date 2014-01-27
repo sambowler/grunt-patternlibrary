@@ -27,33 +27,28 @@ module.exports = function(grunt) {
   var bowerComponents = moduleRoot + '/bower_components';
   var css = moduleRoot + '/css';
   var js = moduleRoot + '/js';
-  var defaults = {
-    wrapperTemplate: wrapperTemplate,
-    patternTemplate: patternTemplate,
-    indexName: 'index.html',
-    title: 'Pattern Library',
-    include: [
-      {
-        src: bowerComponents,
-        dest: 'bower_components'
-      },
-      {
-        src: css,
-        dest: 'css'
-      },
-      {
-        src: js,
-        dest: 'js'
-      }
-    ]
-  };
 
   grunt.registerMultiTask('patternlibrary', 'Create a pattern library with a set of HTML files.', function() {
-    function getWrapperMarkup(template, title, patternsArray) {
+    var options = this.options({
+      wrapperTemplate: wrapperTemplate,
+      patternTemplate: patternTemplate,
+      indexName: 'index.html',
+      title: 'Pattern Library',
+      prefix: 'ptrn',
+      include: [
+        {
+          src: bowerComponents,
+          dest: 'bower_components'
+        }
+      ]
+    });
+
+    function getWrapperMarkup(template, title, prefix, patternsArray) {
       var data = {
         data: {
           title: title,
-          patterns: patternsArray
+          patterns: patternsArray,
+          prefix: prefix
         }
       };
 
@@ -63,11 +58,12 @@ module.exports = function(grunt) {
     var patterns = [];
 
     this.files.forEach(function(f) {
-      var indexName = f.indexName || defaults.indexName;
-      var patternTemplate = f.patternTemplate || defaults.patternTemplate;
-      var wrapperTemplate = f.wrapperTemplate || defaults.wrapperTemplate;
-      var title = f.title || defaults.title;
-      var includesArr = f.include ? defaults.include.concat(f.include) : defaults.include;
+      var indexName = f.indexName || options.indexName;
+      var patternTemplate = f.patternTemplate || options.patternTemplate;
+      var wrapperTemplate = f.wrapperTemplate || options.wrapperTemplate;
+      var title = f.title || options.title;
+      var includesArr = f.include ? options.include.concat(f.include) : options.include;
+      var prefix = f.prefix || options.prefix;
 
       f.src.filter(function(filepath) {
         if (!grunt.file.exists(filepath)) {
@@ -77,12 +73,12 @@ module.exports = function(grunt) {
           return true;
         }
       }).map(function(path) {
-        var patternData = pattern.process(path, patternTemplate);
+        var patternData = pattern.process(path, patternTemplate, prefix);
 
         if(patternData) patterns.push(patternData);
       });
 
-      var markup = getWrapperMarkup(wrapperTemplate, title, patterns);
+      var markup = getWrapperMarkup(wrapperTemplate, title, prefix, patterns);
 
       grunt.file.write(f.dest + '/' + indexName, markup);
 
