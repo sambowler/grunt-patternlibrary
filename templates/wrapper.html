@@ -1,49 +1,76 @@
 <!doctype html>
 <html>
   <head>
+    <title><%= title %></title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" href="bower_components/prism/themes/prism.css" />
-    <link rel="stylesheet" href="css/style.css" />
-
-    <title><%= title %></title>
 
     <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: serif;
+      }
+
       .<%= prefix %> {
         margin-top: 40px;
       }
 
       .<%= prefix %>-pattern,
-      .<%= prefix %>-listing {
+      .<%= prefix %>-overview {
         display: none;
       }
 
       .<%= prefix %>-pattern.is-active,
-      .<%= prefix %>-listing.is-active {
+      .<%= prefix %>-overview.is-active {
         display: block;
+      }
+
+      .<%= prefix %>-container {
+        width: 90%;
+        max-width: 1060px;
+        margin: 0 auto;
+      }
+
+      .<%= prefix %>-header {
+        background-color: #EEE;
+        padding: 10px 20px;
+      }
+
+      .<%= prefix %>-header:after {
+        content: '';
+        display: table;
+        clear: both;
+      }
+
+      .<%= prefix %>-title {
+        float: left;
+      }
+
+      .<%= prefix %>-nav {
+        float: right;
       }
     </style>
   </head>
   <body>
     <div class="<%= prefix %>-container">
-      <nav class="<%= prefix %>-nav" role="navigation">
-        <a class="title" href="#/"><%= title %></a>
+      <header class="<%= prefix %>-header">
+        <h1 class="<%= prefix %>-title"><%= title %></h1>
 
-        <div class="<%= prefix %>-nav-list">
-          <a href="javascript:void(0)" class="<%= prefix %>-nav-list-toggle">Patterns <span class="<%= prefix %>-arrow">&#x25bc;</span></a>
-
-          <ul>
-            <% _.forEach(patterns, function(pattern) { %>
-              <li><a href="#/<%= pattern.slug %>"><%= pattern.title %></a></li>
-            <% }); %>
-          </ul>
-        </div>
-      </nav>
+        <select class="<%= prefix %>-nav">
+          <option value="#/">--- Listing ---</option>
+          <% _.forEach(patterns, function(pattern) { %>
+          <option value="#/<%= pattern.slug %>"><%= pattern.title %></option>
+          <% }); %>
+        </select>
+      </header>
 
       <div class="<%= prefix %>-overview">
         <% _.forEach(patterns, function(pattern) { %>
           <a href="#/<%= pattern.slug %>" class="list-group-item">
-            <h4 class="list-group-item-heading"><%= pattern.title %></h4>
+            <h3 class="list-group-item-heading"><%= pattern.title %></h3>
             <p class="list-group-item-text"><%= pattern.note %></p>
           </a>
         <% }); %>
@@ -56,13 +83,12 @@
       </div>
     </div>
 
-    <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/prism/prism.js"></script>
     <script src="bower_components/pathjs/path.min.js"></script>
     <script>
       (function() {
         var activeClass = 'is-active';
-        var patternSelector = '.<%= prefix %>pattern';
+        var patternSelector = '.<%= prefix %>-pattern';
 
         function iterateNodes(els, cb) {
           [].forEach.call(els, cb);
@@ -74,22 +100,40 @@
           });
         }
 
+        function updateSelect(value) {
+          document.querySelector('.<%= prefix %>-nav').value = '#/' + value;
+        }
+
         Path.root('#/');
 
         Path.map('#/').to(function() {
           removeClassFromAll(document.querySelectorAll(patternSelector));
 
-          document.querySelector('.<%= prefix %>-listing').classList.add(activeClass);
+          document.querySelector('.<%= prefix %>-overview').classList.add(activeClass);
+
+          updateSelect('');
         });
 
         Path.map('#/:name').to(function() {
-          document.querySelector('.<%= prefix %>-listing').classList.remove(activeClass);
+          document.querySelector('.<%= prefix %>-overview').classList.remove(activeClass);
           removeClassFromAll(document.querySelectorAll(patternSelector));
 
           document.getElementById(this.params.name).classList.add(activeClass);
+
+          updateSelect(this.params.name);
         });
 
         Path.listen();
+
+        var select = document.querySelector('.<%= prefix %>-nav');
+
+        select.addEventListener('change', function() {
+          var path = select.value;
+
+          if(!path) path = '#/';
+
+          window.location.href = path;
+        });
       })();
     </script>
   </body>

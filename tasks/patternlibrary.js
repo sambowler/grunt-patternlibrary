@@ -6,8 +6,7 @@
  * Copyright (c) 2014 Sam Bowler
  * Licensed under the MIT license.
  *
- * TODO: One pattern visible at a time (separate URLs for each)
- * TODO: Notes in patterns
+ * TODO: Specify stylesheets
  */
 module.exports = function(grunt) {
   'use strict';
