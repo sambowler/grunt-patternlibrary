@@ -6,8 +6,9 @@
  * Copyright (c) 2014 Sam Bowler
  * Licensed under the MIT license.
  *
- * TODO: Styling
+ * TODO: Styling (more specificity: IDs)
  * TODO: Detailed and simple switcher
+ * TODO: Switcher updates URL
  */
 module.exports = function(grunt) {
   'use strict';

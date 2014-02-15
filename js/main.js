@@ -22,11 +22,14 @@
     $(pattern).addClass(activeClass);
 
     updateNav(patternName);
+
+    $('body').addClass('is-pattern-page');
   }
 
   Path.root('#/');
 
   Path.map('#/').to(function() {
+    $('body').removeClass('is-pattern-page');
     $('.ptrnlib-overview').addClass(activeClass);
     $('.ptrnlib-pattern').removeClass(activeClass);
 
@@ -47,11 +50,29 @@
 
   Path.listen();
 
-  $( '.ptrnlib-nav' ).on( 'change', function() {
+  $('.ptrnlib-nav').on('change', function() {
     var path = this.value;
 
     if(!path) path = '#/';
 
     window.location.href = path;
   });
+
+  $('.ptrnlib-view-type').on('change', function() {
+    var types = ['simple', 'detailed'];
+    var type = this.value;
+    var $body = $('body');
+
+    for(var i = 0; i < types.length; i++) {
+      var klass = 'is-' + types[i] + '-view';
+
+      if(types[i] === type) {
+        $body.addClass(klass);
+      } else {
+        $body.removeClass(klass);
+      }
+    }
+  });
+
+  $('.ptrnlib-view-type').trigger('change');
 })();

@@ -28,16 +28,18 @@
         </select>
 
         <select class="ptrnlib-view-type">
-          <option value="detailed">Detailed view (show markup, notes)</option>
+          <option value="detailed">Detailed view</option>
           <option value="simple">Simple view</option>
         </select>
       </header>
 
       <div class="ptrnlib-overview">
         <% _.forEach(patterns, function(pattern) { %>
-          <a href="#/<%= pattern.slug %>" class="list-group-item">
-            <h3 class="list-group-item-heading"><%= pattern.title %></h3>
-            <p class="list-group-item-text"><%= pattern.note %></p>
+          <a href="#/<%= pattern.slug %>" class="ptrnlib-overview-item">
+            <h2><%= pattern.title %></h2>
+            <% if(typeof pattern.note !== 'undefined') { %>
+            <p><%= pattern.note %></p>
+            <% } %>
           </a>
         <% }); %>
       </div>
