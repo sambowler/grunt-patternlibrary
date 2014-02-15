@@ -1,10 +1,17 @@
 /* vim: set ts=2 sw=2: */
+/**
+ * Processes a specific pattern
+ */
 module.exports = function(grunt) {
   'use strict';
 
   var yamlFrontMatter = require('yaml-front-matter');
   var _ = require('lodash');
 
+  /**
+   * Gets the slug for a pattern if specified in the YAML front matter and
+   * constructs one if not available.
+   */
   function getPatternSlug(path, data) {
     if(data.hasOwnProperty('slug')) {
       return data.slug;
@@ -15,7 +22,16 @@ module.exports = function(grunt) {
     }
   }
 
-  function process(path, templatePath, prefix) {
+  /**
+   * Processes passed data in to an object of data about the pattern
+   *
+   * @param {String} path - Path to the pattern's HTML
+   * @param {String} templatePath - Path to the template to be used to process
+   * the path data with
+   *
+   * @returns {object} Object of data about the processed pattern
+   */
+  function processPattern(path, templatePath) {
     var fileContents = grunt.file.read(path);
     var frontMatter = yamlFrontMatter.loadFront(fileContents);
 
@@ -27,8 +43,7 @@ module.exports = function(grunt) {
     var template = grunt.file.read(templatePath);
     var data = {
       content: frontMatter.__content.trim(),
-      slug: getPatternSlug(path, frontMatter),
-      prefix: prefix
+      slug: getPatternSlug(path, frontMatter)
     };
 
     delete frontMatter.slug;
@@ -43,6 +58,6 @@ module.exports = function(grunt) {
   }
 
   return {
-    process: process
+    processPattern: processPattern
   }
 }

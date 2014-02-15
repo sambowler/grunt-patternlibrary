@@ -21,6 +21,7 @@
   "dependencies": {
     "bootstrap": "~3.0.3",
     "prism": "gh-pages",
-    "pathjs": "*"
+    "pathjs": "*",
+    "jquery": "1.11.0"
   }
 }
