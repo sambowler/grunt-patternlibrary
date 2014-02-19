@@ -6,11 +6,13 @@ module.exports = function(grunt) {
   var chalk = require('chalk');
 
   function processArray(defaults, customArr, blankCanvas, usingDefaultWrapperTemplate) {
-    if(blankCanvas) return customArr || [];
-
     customArr = customArr || [];
 
-    return usingDefaultWrapperTemplate ? defaults.concat(customArr) : customArr;
+    if(blankCanvas) {
+        return customArr;
+    } else {
+        return usingDefaultWrapperTemplate ? defaults.concat(customArr) : customArr;
+    }
   }
 
   /**
@@ -25,7 +27,7 @@ module.exports = function(grunt) {
       var dest = basePath + '/' + include.dest;
 
       if(!grunt.file.exists(src)) {
-        grunt.log.warn(chalk.red('>>') + ' Couldn\'t find "' + src + '".');
+        grunt.log.warn('Couldn\'t find "' + src + '".');
 
         return false;
       }

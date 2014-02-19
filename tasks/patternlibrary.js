@@ -48,10 +48,6 @@ module.exports = function(grunt) {
     {
       src: moduleRoot + '/js',
       dest: 'js'
-    },
-    {
-      src: moduleRoot + '/bower_components',
-      dest: 'bower_components'
     }
   ];
 
@@ -59,6 +55,10 @@ module.exports = function(grunt) {
     var options = this.options(defaults);
 
     this.files.forEach(function(f) {
+      if(typeof f.dest === 'undefined') {
+        grunt.fail.warn('No destination specified, use the "dest" paramater.');
+      }
+
       var indexName = f.indexName || options.indexName;
       var wrapperTemplate = f.wrapperTemplate || options.wrapperTemplate;
       var patterns = [];

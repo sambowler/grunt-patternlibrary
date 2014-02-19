@@ -25,9 +25,6 @@ In your project's Gruntfile, add a section named `patternlibrary` to the data ob
 ```js
 grunt.initConfig({
   patternlibrary: {
-    options: {
-      // Task-specific options go here.
-    },
     your_target: {
       // Target-specific file lists and/or options go here.
     },
@@ -36,49 +33,51 @@ grunt.initConfig({
 ```
 
 ### Options
-
-#### options.separator
-Type: `String`
-Default value: `',  '`
-
-A string value that is used to do something with whatever.
-
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
-
-A string value that is used to do something else with whatever else.
-
-### Usage Examples
-
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
-```js
-grunt.initConfig({
-  patternlibrary: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
+No task-wide options
 
 #### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
 
 ```js
 grunt.initConfig({
   patternlibrary: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
+    patterns: {
+      // Destination folder for the generated pattern library to be saved in
+      dest: 'patterns/dist',
+
+      // Name of the index HTML file that is generated (default: "index.html")
+      indexName: 'foobar.html',
+
+      // Stylesheets to include on the page (path relative to "dest") -- will be output in sequential order in the HEAD of the document
+      stylesheets: [ 'stylesheet1.css', 'stylesheet2.css' ],
+
+      // JavaScripts to include on the page (path relative to "dest") -- wil be output in sequential order at the bottom of the BODY tag in the document
+      javascripts: [ 'script1.js', 'script2.js' ],
+
+      // If this is set to true, none of grunt-patternlibrary's built in CSS or JS will be brought through to the output (optional)
+      blankCanvas: true
+
+      // Title for the pattern library
+      title: 'My Pattern Library',
+
+      // Additional files to include (these can be referenced in the "stylesheets" and "javascripts" options above)
+      include: [
+        {
+          src: 'some-folder/style.css',
+          // Relative to "dest"
+          dest: 'css/my-styles.css'
+        }
+      ],
+
+      // Path to your individual pattern HTML files
+      src: 'patterns/src/**/*.html',
+
+      // Path to a custom template for individual patterns
+      patternTemplate: 'patterns/patternTemplate.html',
+
+      // Path to a custom template for the wrapper around the patterns
+      wrapperTemplate: 'patterns/wrapperTemplate.html'
+    }
+  }
 });
 ```
 
