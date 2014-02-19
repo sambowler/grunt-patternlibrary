@@ -48,7 +48,8 @@
 
   Path.root('#/');
 
-  Path.map('#/').enter(function() {
+  Path.map('#/').to(function() {
+    $('body').removeClass('is-pattern-page is-simple-view is-detailed-view');
     $('body').addClass('is-pattern-listing');
     $('.ptrnlib-overview').addClass(activeClass);
     $('.ptrnlib-pattern').removeClass(activeClass);
@@ -60,6 +61,11 @@
 
   Path.map('#/:name(/:view)').to(function() {
     var patternName = this.params.name;
+    if(typeof this.params.view === 'undefined' ) {
+        window.location.href = '#/' + patternName + '/' + document.querySelector('.ptrnlib-view-type').value;
+    } else {
+        changeViewType(this.params.view);
+    }
 
     if(typeof patterns === 'undefined') {
       getPatternJSON.done(function() {
@@ -69,15 +75,7 @@
       changeVisiblePattern(patternName);
     }
 
-    if(typeof this.params.view === 'undefined' ) {
-        window.location.href = '#/' + patternName + '/' + document.querySelector('.ptrnlib-view-type').value;
-    } else {
-        changeViewType(this.params.view);
-    }
-
     currPattern = patternName;
-  }).exit(function() {
-      $('body').removeClass('is-pattern-page is-simple-view is-detailed-view');
   });
 
   Path.listen();
