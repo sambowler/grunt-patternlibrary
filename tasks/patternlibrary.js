@@ -1,3 +1,4 @@
+/*global require, __dirname */
 /* vim: set ts=2 sw=2: */
 /*
  * grunt-patternlibrary

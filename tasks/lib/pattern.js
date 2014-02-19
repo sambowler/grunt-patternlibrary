@@ -1,3 +1,4 @@
+/*global require */
 /* vim: set ts=2 sw=2: */
 /**
  * Processes a specific pattern
@@ -7,6 +8,7 @@ module.exports = function(grunt) {
 
   var yamlFrontMatter = require('yaml-front-matter');
   var _ = require('lodash');
+  var chalk = require('chalk');
 
   /**
    * Gets the slug for a pattern if specified in the YAML front matter and
@@ -36,7 +38,7 @@ module.exports = function(grunt) {
     var frontMatter = yamlFrontMatter.loadFront(fileContents);
 
     if(typeof frontMatter.title === 'undefined') {
-      grunt.log.warn('"' + path + '" doesn\'t have a title -- ignoring this file.');
+      grunt.log.warn(chalk.red('>>') + ' "' + path + '" doesn\'t have a title -- ignoring this file.');
       return false;
     }
 
@@ -52,12 +54,14 @@ module.exports = function(grunt) {
     // Carry the rest of the front matter data to the object
     data = _.defaults(data, frontMatter);
 
-    data['html'] = grunt.template.process(template, { data: data });
+    data.html = grunt.template.process(template, { data: data });
+
+    grunt.log.writeln(chalk.green('>>') + ' Processed pattern "' + path + '".');
 
     return data;
   }
 
   return {
     processPattern: processPattern
-  }
-}
+  };
+};

@@ -1,3 +1,4 @@
+/*global require, process */
 module.exports = function(grunt) {
   'use strict';
 
@@ -50,5 +51,5 @@ module.exports = function(grunt) {
   return {
     processIncludes: processIncludes,
     processArray: processArray
-  }
-}
+  };
+};

@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         title: patternData.title,
         note: patternData.note,
         content: patternData.content
-      }
+      };
     });
 
     return JSON.stringify(data);
@@ -38,5 +38,5 @@ module.exports = function(grunt) {
   return {
     getMarkup: getMarkup,
     getJSON: getJSON
-  }
-}
+  };
+};
