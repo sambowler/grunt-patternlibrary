@@ -3,6 +3,7 @@ body {
   padding-top: 70px;
 }
 
+.is-pattern-listing .ptrnlib-container,
 .is-detailed-view .ptrnlib-container {
   width: 90%;
   max-width: 1040px;

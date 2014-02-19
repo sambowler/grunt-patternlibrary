@@ -30,13 +30,13 @@ module.exports = function(grunt) {
   defaults.indexName = 'index.html';
   defaults.title = 'Pattern Library';
   defaults.stylesheets = [
-    'bower_components/prism/themes/prism.css',
+    'css/prism.css',
     'css/style.css'
   ];
   defaults.javascripts = [
-    'bower_components/jquery/dist/jquery.min.js',
-    'bower_components/prism/prism.js',
-    'bower_components/pathjs/path.min.js',
+    'js/jquery.min.js',
+    'js/prism.js',
+    'js/path.min.js',
     'js/main.js'
   ];
   defaults.include = [
