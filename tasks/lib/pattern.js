@@ -38,7 +38,7 @@ module.exports = function(grunt) {
     var frontMatter = yamlFrontMatter.loadFront(fileContents);
 
     if(typeof frontMatter.title === 'undefined') {
-      grunt.log.warn(chalk.red('>>') + ' "' + path + '" doesn\'t have a title -- ignoring this file.');
+      grunt.log.warn('"' + path + '" doesn\'t have a title -- ignoring this file.');
       return false;
     }
 

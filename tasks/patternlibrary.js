@@ -1,4 +1,4 @@
-/*global require, __dirname */
+/*jshint node:true */
 /* vim: set ts=2 sw=2: */
 /*
  * grunt-patternlibrary
@@ -6,28 +6,21 @@
  *
  * Copyright (c) 2014 Sam Bowler
  * Licensed under the MIT license.
- *
- * TODO: Switcher updates URL
  */
 module.exports = function(grunt) {
   'use strict';
 
   var _ = require('lodash');
   var chalk = require('chalk');
-  var moduleRoot = (function() {
-    var dirArr = __dirname.split('/');
-
-    dirArr.pop();
-
-    return dirArr.join('/');
-  })();
+  var path = require('path');
+  var pluginRoot = path.join(__dirname, '../');
   var pattern = require('./lib/pattern')(grunt);
   var includes = require('./lib/includes')(grunt);
   var processData = require('./lib/processData')(grunt);
   var defaults = {};
 
-  defaults.wrapperTemplate = moduleRoot + '/templates/wrapper.html';
-  defaults.patternTemplate = moduleRoot + '/templates/pattern.html';
+  defaults.wrapperTemplate = pluginRoot + '/templates/wrapper.html';
+  defaults.patternTemplate = pluginRoot + '/templates/pattern.html';
   defaults.indexName = 'index.html';
   defaults.title = 'Pattern Library';
   defaults.stylesheets = [
@@ -42,11 +35,11 @@ module.exports = function(grunt) {
   ];
   defaults.include = [
     {
-      src: moduleRoot + '/css',
+      src: pluginRoot + '/css',
       dest: 'css'
     },
     {
-      src: moduleRoot + '/js',
+      src: pluginRoot + '/js',
       dest: 'js'
     }
   ];
@@ -65,7 +58,7 @@ module.exports = function(grunt) {
 
       f.src.filter(function(filepath) {
         if (!grunt.file.exists(filepath)) {
-          grunt.log.warn(chalk.red('>>') + ' Source file "' + filepath + '" not found.');
+          grunt.log.warn('Source file "' + filepath + '" not found.');
           return false;
         } else {
           return true;
