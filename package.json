@@ -1,7 +1,7 @@
 {
   "name": "grunt-patternlibrary",
   "description": "Create a pattern library with a set of HTML files.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/sambowler/grunt-patternlibrary",
   "author": {
     "name": "Sam Bowler",
