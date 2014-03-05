@@ -55,6 +55,7 @@ module.exports = function(grunt) {
       var indexName = f.indexName || options.indexName;
       var wrapperTemplate = f.wrapperTemplate || options.wrapperTemplate;
       var patterns = [];
+      var categories = [];
 
       f.src.filter(function(filepath) {
         if (!grunt.file.exists(filepath)) {
@@ -65,7 +66,7 @@ module.exports = function(grunt) {
         }
       }).map(function(path) {
         var patternData = pattern.processPattern(path, f.patternTemplate || options.patternTemplate);
-
+        if( typeof patternData.category === 'string' && categories.indexOf( patternData.category ) < 0 ) categories.push( patternData.category )
         if(patternData) patterns.push(patternData);
       });
 
@@ -73,7 +74,8 @@ module.exports = function(grunt) {
         title: f.title || options.title,
         stylesheets: f.stylesheets ? options.stylesheets.concat(f.stylesheets) : options.stylesheets,
         javascripts: f.javascripts ? options.javascripts.concat(f.javascripts) : options.javascripts,
-        patterns: patterns
+        patterns: patterns,
+        categories: categories
       });
 
       grunt.file.write(f.dest + '/' + indexName, html);

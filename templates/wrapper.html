@@ -22,9 +22,20 @@
 
         <select class="ptrnlib-nav">
           <option value="#/">Pattern Listing</option>
-          <% _.forEach(patterns, function(pattern) { %>
-          <option value="#/<%= pattern.slug %>"><%= pattern.title %></option>
+          <% _.forEach(categories, function(category) { %>
+          <optgroup label="<%= category %>">
+              <% _.forEach(patterns, function(pattern) {
+              if( pattern.category === category ){ %>
+                  <option value="#/<%= pattern.slug %>"><%= pattern.title %></option>
+              <% }
+              }); %>
+          </optgroup>
           <% }); %>
+          <% _.forEach(patterns, function(pattern) {
+          if( typeof pattern.category === 'undefined' ){ %>
+              <option value="#/<%= pattern.slug %>"><%= pattern.title %></option>
+          <% }
+          }); %>
         </select>
 
         <select class="ptrnlib-view-type">

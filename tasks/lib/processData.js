@@ -13,7 +13,8 @@ module.exports = function(grunt) {
       data[patternData.slug] = {
         title: patternData.title,
         note: patternData.note,
-        content: patternData.content
+        content: patternData.content,
+        category: patternData.category
       };
     });
 
