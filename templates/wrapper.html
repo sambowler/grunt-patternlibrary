@@ -22,9 +22,17 @@
 
         <select class="ptrnlib-nav">
           <option value="#/">Pattern Listing</option>
-          <% _.forEach(patterns, function(pattern) { %>
-          <option value="#/<%= pattern.slug %>"><%= pattern.title %></option>
-          <% }); %>
+          <% _.forOwn(patterns, function(pattern) {
+              if( typeof pattern.category !== 'undefined' && pattern.category === true ){ %>
+                  <optgroup label="<%= pattern.title %>">
+                  <% _.forEach(pattern.patterns, function(pattern) { %>
+                      <option value="#/<%= pattern.slug %>"><%= pattern.title %></option>
+                  <% }); %>
+                  </optgroup>
+              <% } else { %>
+                  <option value="#/<%= pattern.slug %>"><%= pattern.title %></option>
+              <% }
+          }); %>
         </select>
 
         <select class="ptrnlib-view-type">
@@ -34,18 +42,35 @@
       </header>
 
       <div class="ptrnlib-overview">
-        <% _.forEach(patterns, function(pattern) { %>
-          <a href="#/<%= pattern.slug %>" class="ptrnlib-overview-item">
+        <% _.forOwn(patterns, function(pattern) {
+          if( typeof pattern.category !== 'undefined' && pattern.category === true ){ %>
+              <% _.forEach(pattern.patterns, function(ptn) { %>
+                  <a href="#/<%= ptn.slug %>" class="ptrnlib-overview-item">
+                    <h2><%= ptn.title %></h2>
+                    <% if(typeof ptn.note !== 'undefined') { %>
+                        <p><%= ptn.note %></p>
+                    <% } %>
+                  </a>
+              <% }); %>
+          <% } else { %>
+            <a href="#/<%= pattern.slug %>" class="ptrnlib-overview-item">
             <h2><%= pattern.title %></h2>
             <% if(typeof pattern.note !== 'undefined') { %>
-            <p><%= pattern.note %></p>
+                <p><%= pattern.note %></p>
             <% } %>
-          </a>
+            </a>
+          <% } %>
         <% }); %>
       </div>
 
-      <% _.forEach(patterns, function(pattern) { %>
-        <%= pattern.html %>
+      <% _.forOwn(patterns, function(pattern) {
+          if( typeof pattern.category !== 'undefined' && pattern.category === true ){ %>
+              <% _.forEach(pattern.patterns, function(ptn) { %>
+                <%= ptn.html %>
+              <% });
+          } else { %>
+                <%= pattern.html %>
+          <% } %>
       <% }); %>
     </div>
 

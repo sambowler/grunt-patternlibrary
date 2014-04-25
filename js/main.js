@@ -17,8 +17,7 @@
     $('.ptrnlib-overview').removeClass(activeClass);
     $('.ptrnlib-pattern').removeClass(activeClass);
 
-    var data = patterns[patternName];
-    var pattern = document.getElementById(patternName);
+    var pattern = document.getElementById('ptrnlib-' + patternName);
 
     $(pattern).addClass(activeClass);
 

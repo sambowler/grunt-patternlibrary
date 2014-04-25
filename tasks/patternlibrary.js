@@ -54,7 +54,19 @@ module.exports = function(grunt) {
 
       var indexName = f.indexName || options.indexName;
       var wrapperTemplate = f.wrapperTemplate || options.wrapperTemplate;
-      var patterns = [];
+
+      /**
+       *  @type {object} patterns
+       *  @example
+       *  {
+       *      categoryName: {
+       *          category: true,
+       *          patterns: [{},{}]
+       *      },
+       *      patternName: {}
+       *  }
+       */
+      var patterns = {};
 
       f.src.filter(function(filepath) {
         if (!grunt.file.exists(filepath)) {
@@ -65,8 +77,15 @@ module.exports = function(grunt) {
         }
       }).map(function(path) {
         var patternData = pattern.processPattern(path, f.patternTemplate || options.patternTemplate);
-
-        if(patternData) patterns.push(patternData);
+        if( typeof patternData.category !== 'undefined' ){
+          if( typeof patterns[ patternData.category ] !== 'undefined' ) {
+            patterns[ patternData.category ].patterns.push( patternData );
+          } else {
+            patterns[ patternData.category ] = { title: patternData.category, category: true, patterns: [ patternData ] };
+          }
+        } else {
+          patterns[ patternData.title ] = patternData;
+        }
       });
 
       var html = processData.getMarkup(wrapperTemplate, {

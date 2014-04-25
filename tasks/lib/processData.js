@@ -7,15 +7,8 @@ module.exports = function(grunt) {
    * @returns {string} - Stringified JSON of data
    */
   function getJSON(patterns) {
-    var data = {};
-
-    patterns.forEach(function(patternData) {
-      data[patternData.slug] = {
-        title: patternData.title,
-        note: patternData.note,
-        content: patternData.content
-      };
-    });
+    var _ = require('lodash');
+    var data = patterns;
 
     return JSON.stringify(data);
   }
