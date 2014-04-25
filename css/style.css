@@ -80,6 +80,7 @@ body {
 }
 
 .ptrnlib-pattern__markup {
+  clear: both;
   margin-top: 30px;
   margin-bottom: 30px;
 }
