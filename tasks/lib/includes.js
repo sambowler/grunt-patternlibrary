@@ -5,13 +5,13 @@ module.exports = function(grunt) {
   var wrench = require('wrench');
   var chalk = require('chalk');
 
-  function processArray(defaults, customArr, blankCanvas, usingDefaultWrapperTemplate) {
+  function processArray(defaults, customArr, blankCanvas ) {
     customArr = customArr || [];
 
     if(blankCanvas) {
         return customArr;
     } else {
-        return usingDefaultWrapperTemplate ? defaults.concat(customArr) : customArr;
+        return defaults.concat(customArr);
     }
   }
 

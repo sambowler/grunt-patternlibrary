@@ -101,7 +101,7 @@ module.exports = function(grunt) {
       grunt.file.write(f.dest + '/patterns.json', processData.getJSON(patterns));
       grunt.log.writeln(chalk.green('>>') + ' Patterns JSON created at "' + f.dest + '/patterns.json".');
 
-      var includesArr = includes.processArray(options.include, f.include, f.blankCanvas, wrapperTemplate === options.wrapperTemplate);
+      var includesArr = includes.processArray(options.include, f.include, f.blankCanvas );
 
       includes.processIncludes(f.dest, includesArr);
     });
