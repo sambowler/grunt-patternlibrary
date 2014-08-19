@@ -18,6 +18,24 @@
   <body>
     <%= content %>
 
+    <footer role="contentinfo" class="ptrnlib-header is-active">
+
+        <%= header %>
+
+        <div class="ptrnlib-pattern__details">
+            <div class="ptrnlib-pattern__docs">
+                <% if(typeof note !== 'undefined') { %>
+                    <%= note %>
+                <% } %>
+            </div>
+
+            <div class="ptrnlib-pattern__markup">
+                <pre class="source"><code class="language-markup"><%- content %></code></pre>
+            </div>
+        </div>
+
+    </footer>
+
     <% _.forEach(javascripts, function(javascript) { %>
     <%= javascript %>
     <% }); %>
