@@ -1,29 +1,76 @@
 body {
   margin: 0;
-  padding-top: 70px;
-}
-
-.is-pattern-listing .ptrnlib-container,
-.is-detailed-view .ptrnlib-container {
-  width: 90%;
-  max-width: 1040px;
-  margin: 0 auto;
+  padding-bottom: 60px;
 }
 
 .ptrnlib-header {
-  background-color: #eee;
-  background-color: rgba(238, 238, 238, 0.9);
+  border-top: solid 4px #eee;
+  background-color: #fff;
   color: #444;
   font-family: sans-serif;
-  padding: 10px 20px;
-  overflow: hidden;
   position: fixed;
-  top: 0;
+  bottom: -60px;
   left: 0;
   width: 100%;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  border-bottom: 1px solid #ddd;
+
+}
+
+.ptrnlib-header.is-active {
+    bottom: 0;
+}
+
+.ptrnlib-toggle {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    margin-left: -25px;
+    display: block;
+    text-indent: 104%;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 50px;
+    height: 25px;
+    background: #fff;
+    border: solid 2px #eee;
+    border-radius: 6px 6px 0 0;
+    border-width: 3px 3px 0;
+}
+
+.ptrnlib-toggle:after {
+    content: "…";
+    position: absolute;
+    top: -8px;
+    left: 0;
+    color: #999;
+    font-size: 24px;
+    text-indent: 0;
+    width: 100%;
+    text-align: center;
+    line-height: 24px;
+}
+
+.ptrnlib-toggle:hover,
+.ptrnlib-toggle:focus {
+    background-color: #eee;
+    color: #777;
+}
+
+.ptrnlib-header__inner {
+    padding: 10px 20px;
+}
+
+
+.ptrnlib-header h1,
+.ptrnlib-nav {
+    display: inline-block;
+    vertical-align: middle;
+    }
+
+.ptrnlib-header h1 {
+    font-size: 30px;
+    margin-bottom: 0;
 }
 
 .ptrnlib-title {
@@ -37,13 +84,9 @@ body {
   text-decoration: none;
 }
 
-.ptrnlib-nav,
-.ptrnlib-view-type {
-  float: right;
-}
-
-.ptrnlib-view-type {
-  display: none;
+.ptrnlib-nav {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .is-pattern-page .ptrnlib-view-type {
@@ -52,11 +95,6 @@ body {
 
 .ptrnlib-nav {
   margin-left: 20px;
-}
-
-.ptrnlib-overview,
-.ptrnlib-pattern {
-  display: none;
 }
 
 .ptrnlib-overview.is-active,
@@ -79,9 +117,12 @@ body {
   margin-bottom: 0;
 }
 
+
+.ptrnlib-pattern__details {
+    display: none;
+}
+
 .ptrnlib-pattern__markup {
-  margin-top: 30px;
-  margin-bottom: 30px;
 }
 
 .ptrnlib-pattern__markup pre {
@@ -122,10 +163,18 @@ body {
 
 @media screen and (max-width: 500px) {
   body {
-    padding-top: 100px;
+    padding-bottom: 51px;
   }
 
   .ptrnlib-view-type {
     clear: right;
+  }
+
+  .ptrnlib-header {
+      bottom: -51px;
+  }
+
+  .ptrnlib-header h1 {
+      font-size: 24px;
   }
 }

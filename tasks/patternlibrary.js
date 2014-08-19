@@ -22,6 +22,7 @@ module.exports = function(grunt) {
   defaults.wrapperTemplate = pluginRoot + '/templates/wrapper.html';
   defaults.patternTemplate = pluginRoot + '/templates/pattern.html';
   defaults.indexTemplate = pluginRoot + '/templates/index.html';
+  defaults.headerTemplate = pluginRoot + '/templates/header.html';
   defaults.indexName = 'index.html';
   defaults.title = 'Pattern Library';
   defaults.stylesheets = [
@@ -55,6 +56,7 @@ module.exports = function(grunt) {
       var indexName = f.indexName || options.indexName;
       var wrapperTemplate = f.wrapperTemplate || options.wrapperTemplate;
       var patternTemplate = f.patternTemplate || options.patternTemplate;
+      var headerTemplate = f.headerTemplate || options.headerTemplate;
       var indexTemplate = f.indexTemplate || options.indexTemplate;
       var stylesheets = f.stylesheets ? options.stylesheets.concat(f.stylesheets) : options.stylesheets;
       var javascripts = f.javascripts ? options.javascripts.concat(f.javascripts) : options.javascripts;
@@ -97,6 +99,7 @@ module.exports = function(grunt) {
       }).map( function( data ){
         var markup;
         if( typeof templateData.patterns === 'undefined' ) templateData.patterns = patterns;
+        if( typeof templateData.header === 'undefined' ) templateData.header = processData.getMarkup( headerTemplate, templateData );
 
         // if( typeof data.template !== 'undefined' ){
         //   data.content = processData.getMarkup( pluginRoot + '/src/' + data.template, templateData );
@@ -113,7 +116,7 @@ module.exports = function(grunt) {
         grunt.file.write(f.dest + '/patterns/' + data.slug + '.html', markup);
         grunt.log.writeln(chalk.green('>>') + ' Pattern HTML created at "' + f.dest + '/patterns/' + data.slug + '.html');
       });
-
+  
       var indexContent = processData.getMarkup( indexTemplate, templateData );
       templateData.stylesheets = stylesheets;
       templateData.javascripts = javascripts;
