@@ -10,18 +10,27 @@ body {
   font-family: sans-serif;
   position: fixed;
   bottom: -60px;
+  opacity: 0.5;
   left: 0;
   width: 100%;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
 
+.ptrnlib-header button {
+    font-size: 16px;
 }
 
 .ptrnlib-header.is-active {
+    opacity: 1;
     bottom: 0;
 }
 
-.ptrnlib-toggle {
+.ptrnlib-header.is-active.is-expanded {
+    height: 90%;
+}
+
+.ptrnlib-handle {
     position: absolute;
     top: -25px;
     left: 50%;
@@ -33,17 +42,18 @@ body {
     width: 50px;
     height: 25px;
     background: #fff;
-    border: solid 2px #eee;
+    border: solid 2px;
+    border-color: #eee;
     border-radius: 6px 6px 0 0;
     border-width: 3px 3px 0;
 }
 
-.ptrnlib-toggle:after {
+.ptrnlib-handle:after {
     content: "…";
     position: absolute;
     top: -8px;
     left: 0;
-    color: #999;
+    color: inherit;
     font-size: 24px;
     text-indent: 0;
     width: 100%;
@@ -51,10 +61,8 @@ body {
     line-height: 24px;
 }
 
-.ptrnlib-toggle:hover,
-.ptrnlib-toggle:focus {
-    background-color: #eee;
-    color: #777;
+.ptrnlib-handle:hover,
+.ptrnlib-handle:focus {
 }
 
 .ptrnlib-header__inner {
@@ -62,15 +70,17 @@ body {
 }
 
 
-.ptrnlib-header h1,
+.ptrnlib-h1,
+.ptrnlib-toggle,
 .ptrnlib-nav {
     display: inline-block;
     vertical-align: middle;
-    }
+}
 
-.ptrnlib-header h1 {
+.ptrnlib-h1 {
     font-size: 30px;
     margin-bottom: 0;
+    margin-right: 20px;
 }
 
 .ptrnlib-title {
@@ -94,12 +104,7 @@ body {
 }
 
 .ptrnlib-nav {
-  margin-left: 20px;
-}
-
-.ptrnlib-overview.is-active,
-.ptrnlib-pattern.is-active {
-  display: block;
+    margin-right: 20px;
 }
 
 .ptrnlib-pattern__overview {
@@ -120,10 +125,18 @@ body {
 
 .ptrnlib-pattern__details {
     display: none;
+    overflow: auto;
 }
 
-.ptrnlib-pattern__markup {
+.ptrnlib-header.is-expanded .ptrnlib-pattern__details {
+    display: block;
+    height: 90%;
+    height: calc( 100% - 60px );
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
+
 
 .ptrnlib-pattern__markup pre {
   font-size: 14px;
@@ -161,9 +174,9 @@ body {
   margin-bottom: 0;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 560px) {
   body {
-    padding-bottom: 51px;
+    padding-bottom: 40px;
   }
 
   .ptrnlib-view-type {
@@ -171,10 +184,26 @@ body {
   }
 
   .ptrnlib-header {
-      bottom: -51px;
+      bottom: -40px;
   }
 
   .ptrnlib-header h1 {
       font-size: 24px;
+  }
+
+  .ptrnlib-h1 {
+      display: none;
+  }
+
+  .ptrnlib-header__inner {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+  }
+
+  .ptrnlib-header__inner .ptrnlib-nav,
+  .ptrnlib-header__inner .ptrnlib-toggle {
+
   }
 }

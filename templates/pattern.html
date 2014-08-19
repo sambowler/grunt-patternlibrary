@@ -7,9 +7,12 @@
         <%= header %>
 
         <div class="ptrnlib-pattern__details">
-            <% if(typeof note !== 'undefined') { %>
-                <%= note %>
-            <% } %>
+            <div class="ptrnlib-pattern__docs">
+                <% if(typeof note !== 'undefined') { %>
+                    <%= note %>
+                <% } %>
+            </div>
+
             <div class="ptrnlib-pattern__markup">
                 <pre class="source"><code class="language-markup"><%- content %></code></pre>
             </div>

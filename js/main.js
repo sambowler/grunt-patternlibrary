@@ -1,11 +1,12 @@
 (function() {
-  var activeClass = 'is-active';
   var patterns;
   var iframe = document.querySelector('.ptrnlib-content');
   var getPatternJSON = $.getJSON('patterns.json');
   var currViewType, currPattern;
-  var ptrnlibToggle = $('.ptrnlib-toggle');
+  var ptrnlibHandle = $('.ptrnlib-handle');
   var ptrnlibHeader = $('.ptrnlib-header');
+  var ptrnlibToggle = $('.ptrnlib-toggle');
+  var ptrnlibDetails = $('.ptrnlib-pattern__details');
 
   getPatternJSON.then(function(data) {
     patterns = data;
@@ -19,10 +20,15 @@
     window.location.href = this.value;
   });
 
-  ptrnlibToggle.on('click', function(){
-      ptrnlibHeader[ ptrnlibHeader.hasClass( activeClass ) ? 'removeClass' : 'addClass' ]( activeClass );
+  function bindToggle( trigger, target, activeClass ){
+    trigger.on('click', function(){
+      target[ target.hasClass( activeClass ) ? 'removeClass' : 'addClass' ]( activeClass );
       return false;
-  });
+    });
+  }
+
+  bindToggle( ptrnlibToggle, ptrnlibHeader, 'is-expanded' );
+  bindToggle( ptrnlibHandle, ptrnlibHeader, 'is-active' );
 
   updateNav();
 })();
