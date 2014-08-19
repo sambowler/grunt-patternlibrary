@@ -1,16 +1,30 @@
 <div class="ptrnlib-pattern" id="ptrnlib-<%= slug %>">
-    <div class="ptrnlib-pattern__overview">
-        <h2><%= title %></h2>
+
+    <%= content %>
+
+    <footer role="contentinfo" class="ptrnlib-header">
+        <h1><%= title %></h1>
         <% if(typeof note !== 'undefined') { %>
-            <p><strong>Usage note:</strong> <%= note %></p>
+            <%= note %>
         <% } %>
-    </div>
+        <div class="ptrnlib-pattern__markup">
+            <pre class="source"><code class="language-markup"><%- content %></code></pre>
+        </div>
 
-    <div class="ptrnlib-pattern__output">
-        <%= content %>
-    </div>
+       <select class="ptrnlib-nav">
+          <option value="#/">Pattern Listing</option>
+          <% _.forOwn(patterns, function(pattern) {
+              if( typeof pattern.category !== 'undefined' && pattern.category === true ){ %>
+                  <optgroup label="<%= pattern.title %>">
+                  <% _.forEach(pattern.patterns, function(pattern) { %>
+                      <option value="/patterns/<%= pattern.slug %>.html"><%= pattern.title %></option>
+                  <% }); %>
+                  </optgroup>
+              <% } else { %>
+                  <option value="/patterns/<%= pattern.slug %>.html"><%= pattern.title %></option>
+              <% }
+          }); %>
+        </select>
 
-    <div class="ptrnlib-pattern__markup">
-        <pre class="source"><code class="language-markup"><%- content %></code></pre>
-    </div>
+    </footer>
 </div>

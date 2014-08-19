@@ -21,6 +21,7 @@ module.exports = function(grunt) {
 
   defaults.wrapperTemplate = pluginRoot + '/templates/wrapper.html';
   defaults.patternTemplate = pluginRoot + '/templates/pattern.html';
+  defaults.indexTemplate = pluginRoot + '/templates/index.html';
   defaults.indexName = 'index.html';
   defaults.title = 'Pattern Library';
   defaults.stylesheets = [
@@ -51,9 +52,12 @@ module.exports = function(grunt) {
       if(typeof f.dest === 'undefined') {
         grunt.fail.warn('No destination specified, use the "dest" paramater.');
       }
-
       var indexName = f.indexName || options.indexName;
       var wrapperTemplate = f.wrapperTemplate || options.wrapperTemplate;
+      var patternTemplate = f.patternTemplate || options.patternTemplate;
+      var indexTemplate = f.indexTemplate || options.indexTemplate;
+      var stylesheets = f.stylesheets ? options.stylesheets.concat(f.stylesheets) : options.stylesheets;
+      var javascripts = f.javascripts ? options.javascripts.concat(f.javascripts) : options.javascripts;
 
       /**
        *  @type {object} patterns
@@ -67,6 +71,9 @@ module.exports = function(grunt) {
        *  }
        */
       var patterns = {};
+      var templateData = {
+        title: f.title || options.title
+      };
 
       f.src.filter(function(filepath) {
         if (!grunt.file.exists(filepath)) {
@@ -76,7 +83,7 @@ module.exports = function(grunt) {
           return true;
         }
       }).map(function(path) {
-        var patternData = pattern.processPattern(path, f.patternTemplate || options.patternTemplate);
+        var patternData = pattern.processPatternData( path );
         if( typeof patternData.category !== 'undefined' ){
           if( typeof patterns[ patternData.category ] !== 'undefined' ) {
             patterns[ patternData.category ].patterns.push( patternData );
@@ -86,14 +93,31 @@ module.exports = function(grunt) {
         } else {
           patterns[ patternData.title ] = patternData;
         }
+        return patternData;
+      }).map( function( data ){
+        var markup;
+        if( typeof templateData.patterns === 'undefined' ) templateData.patterns = patterns;
+
+        // if( typeof data.template !== 'undefined' ){
+        //   data.content = processData.getMarkup( pluginRoot + '/src/' + data.template, templateData );
+        // }
+
+        data = _.defaults( { content: data.content, slug: data.slug }, templateData );
+        markup = processData.getMarkup( patternTemplate, data  );
+
+        data.content = markup;
+        data.stylesheets = stylesheets;
+        data.javascripts = javascripts;
+        markup = processData.getMarkup( wrapperTemplate, _.defaults( data, templateData ) );
+
+        grunt.file.write(f.dest + '/patterns/' + data.slug + '.html', markup);
+        grunt.log.writeln(chalk.green('>>') + ' Pattern HTML created at "' + f.dest + '/patterns/' + data.slug + '.html');
       });
 
-      var html = processData.getMarkup(wrapperTemplate, {
-        title: f.title || options.title,
-        stylesheets: f.stylesheets ? options.stylesheets.concat(f.stylesheets) : options.stylesheets,
-        javascripts: f.javascripts ? options.javascripts.concat(f.javascripts) : options.javascripts,
-        patterns: patterns
-      });
+      var indexContent = processData.getMarkup( indexTemplate, templateData );
+      templateData.stylesheets = stylesheets;
+      templateData.javascripts = javascripts;
+      var html = processData.getMarkup(wrapperTemplate, _.defaults( {content: indexContent}, templateData ) );
 
       grunt.file.write(f.dest + '/' + indexName, html);
       grunt.log.writeln(chalk.green('>>') + ' Patterns HTML created at "' + f.dest + '/' + indexName + '".');
