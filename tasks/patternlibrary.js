@@ -13,6 +13,7 @@ module.exports = function(grunt) {
   var _ = require('lodash');
   var chalk = require('chalk');
   var path = require('path');
+  var marked = require('marked');
   var pluginRoot = path.join(__dirname, '../');
   var pattern = require('./lib/pattern')(grunt);
   var includes = require('./lib/includes')(grunt);
@@ -105,7 +106,7 @@ module.exports = function(grunt) {
         //   data.content = processData.getMarkup( pluginRoot + '/src/' + data.template, templateData );
         // }
 
-        data = _.defaults( { content: data.content, slug: data.slug, template: data.template }, templateData );
+        data = _.defaults( { content: data.content, slug: data.slug, template: data.template, note: data.note }, templateData );
         markup = processData.getMarkup( patternTemplate, data  );
 
         if( typeof data.template !== 'undefined' ){
@@ -115,6 +116,9 @@ module.exports = function(grunt) {
         data.content = markup;
         data.stylesheets = stylesheets;
         data.javascripts = javascripts;
+        if( typeof data.note !== 'undefined' ) {
+          data.note = marked( data.note );
+        }
         markup = processData.getMarkup( wrapperTemplate, _.defaults( data, templateData ) );
 
         grunt.file.write(f.dest + '/patterns/' + data.slug + '.html', markup);
