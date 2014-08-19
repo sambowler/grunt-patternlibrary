@@ -105,8 +105,12 @@ module.exports = function(grunt) {
         //   data.content = processData.getMarkup( pluginRoot + '/src/' + data.template, templateData );
         // }
 
-        data = _.defaults( { content: data.content, slug: data.slug }, templateData );
+        data = _.defaults( { content: data.content, slug: data.slug, template: data.template }, templateData );
         markup = processData.getMarkup( patternTemplate, data  );
+
+        if( typeof data.template !== 'undefined' ){
+          markup = processData.getMarkup( 'patterns/templates/' + data.template + '.html', _.defaults( { content: markup }, data ) );
+        }
 
         data.content = markup;
         data.stylesheets = stylesheets;
