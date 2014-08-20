@@ -123,8 +123,18 @@ body {
     margin-bottom: 30px;
 }
 
-.ptrnlib-pattern__overview h2 {
+.ptrnlib-overview-item h2 {
     margin-top: 0;
+    position: relative;
+}
+
+.ptrnlib-overview-item h2 span {
+    color: #aaa;
+    font-size: 14px;
+    position: absolute;
+    right: 0;
+    bottom: 2px;
+    display: block;
 }
 
 .ptrnlib-pattern__overview *:last-child {
@@ -135,6 +145,7 @@ body {
 .ptrnlib-pattern__details {
     display: none;
     overflow: auto;
+    width: 100%;
 }
 
 .ptrnlib-header.is-expanded .ptrnlib-pattern__details {
@@ -151,6 +162,11 @@ body {
 .ptrnlib-pattern__docs {
     padding: 1em;
     border-top: solid 1px #eee;
+}
+
+.ptrnlib-pattern__markup {
+    width: 100%;
+    overflow: auto;
 }
 
 
@@ -200,6 +216,11 @@ body {
 
     .ptrnlib-header h1 {
         font-size: 24px;
+    }
+
+    .ptrnlib-overview-item h2 span {
+        display: block;
+        position: static;
     }
 
     .ptrnlib-h1 {

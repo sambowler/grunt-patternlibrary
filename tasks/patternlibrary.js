@@ -102,10 +102,6 @@ module.exports = function(grunt) {
         if( typeof templateData.patterns === 'undefined' ) templateData.patterns = patterns;
         if( typeof templateData.header === 'undefined' ) templateData.header = processData.getMarkup( headerTemplate, templateData );
 
-        // if( typeof data.template !== 'undefined' ){
-        //   data.content = processData.getMarkup( pluginRoot + '/src/' + data.template, templateData );
-        // }
-
         data = _.defaults( { content: data.content, slug: data.slug, template: data.template, note: data.note }, templateData );
         markup = processData.getMarkup( patternTemplate, data  );
 

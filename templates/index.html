@@ -1,8 +1,17 @@
 <input type="text" id="ptrnlib-filter" class="ptrnlib-filter" placeholder="filter patterns"/>
 <div class="ptrnlib-container">
-    <% _.forOwn(patterns, function(pattern) { %>
+
+    <% _.forOwn(patterns, function(pattern) {
+    if( typeof pattern.category !== 'undefined' && pattern.category === true ){ %>
+        <% _.forEach(pattern.patterns, function(pattern) { %>
+        <a data-slug="<%= pattern.slug %>" href="patterns/<%= pattern.slug %>.html" class="ptrnlib-overview-item">
+            <h2><%= pattern.title %><span> in <%= pattern.category %></span></h2>
+        </a>
+        <% }); %>
+    <% } else { %>
     <a data-slug="<%= pattern.slug %>" href="patterns/<%= pattern.slug %>.html" class="ptrnlib-overview-item">
-        <h2><%= pattern.title %></h2>
+        <h2><%= pattern.title %> <% if( typeof pattern.category !== 'undefined' ) {%><span> in <%= pattern.category %></span><%} %></h2>
     </a>
-    <% }); %>
+    <% }
+    }); %>
 </div>
