@@ -23,13 +23,14 @@
         <%= header %>
 
         <div class="ptrnlib-pattern__details">
-            <div class="ptrnlib-pattern__docs">
                 <% if(typeof note !== 'undefined') { %>
-                    <%= note %>
+                    <div class="ptrnlib-pattern__docs">
+                        <%= note %>
+                    </div>
                 <% } %>
-            </div>
 
             <div class="ptrnlib-pattern__markup">
+                <h2>Source:</h2>
                 <pre class="source"><code class="language-markup"><%- content %></code></pre>
             </div>
         </div>
@@ -39,5 +40,5 @@
     <% _.forEach(javascripts, function(javascript) { %>
     <%= javascript %>
     <% }); %>
-  </body>
+</body>
 </html>

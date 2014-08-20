@@ -3,7 +3,7 @@
     <h1 class="ptrnlib-h1"><a href="/patterns/"><%= title %></a></h1>
 
     <select class="ptrnlib-nav">
-        <option value="/patterns/">Pattern Listing</option>
+        <option value="/patterns/">Pattern Index</option>
         <% _.forOwn(patterns, function(pattern) {
         if( typeof pattern.category !== 'undefined' && pattern.category === true ){ %>
         <optgroup label="<%= pattern.title %>">

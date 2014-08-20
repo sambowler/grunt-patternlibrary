@@ -1,7 +1,8 @@
+<input type="text" id="ptrnlib-filter" class="ptrnlib-filter" placeholder="filter patterns"/>
 <div class="ptrnlib-container">
-<% _.forOwn(patterns, function(pattern) { %>
-        <a href="patterns/<%= pattern.slug %>.html" class="ptrnlib-overview-item">
-            <h2><%= pattern.title %></h2>
-        </a>
-<% }); %>
+    <% _.forOwn(patterns, function(pattern) { %>
+    <a data-slug="<%= pattern.slug %>" href="patterns/<%= pattern.slug %>.html" class="ptrnlib-overview-item">
+        <h2><%= pattern.title %></h2>
+    </a>
+    <% }); %>
 </div>
