@@ -58,16 +58,22 @@ body {
 }
 
 .ptrnlib-handle:after {
-    content: "…";
+    content: "▲";
     position: absolute;
-    top: -8px;
+    top: -3px;
     left: 0;
     color: inherit;
     font-size: 24px;
     text-indent: 0;
     width: 100%;
     text-align: center;
-    line-height: 24px;
+    -webkit-transform: scale( 0.6 );
+    -ms-transform: scale( 0.6 );
+    transform: scale( 0.6 );
+}
+
+.ptrnlib-header.is-active .ptrnlib-handle:after {
+    content: "▼";
 }
 
 .ptrnlib-handle:hover,
@@ -78,6 +84,28 @@ body {
     padding: 10px 20px;
 }
 
+.ptrnlib-toggle {
+    padding: 2px 5px;
+    background: #eee;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.ptrnlib-toggle:before {
+    margin-right: 5px;
+    top: -1px;
+    position: relative;
+    display: inline-block;
+    content: "+";
+}
+
+.ptrnlib-header.is-expanded .ptrnlib-toggle {
+    background: #ddd;
+    color: #fff;
+}
+
+.ptrnlib-header.is-expanded .ptrnlib-toggle:before {
+    content: "×";
+}
 
 .ptrnlib-h1,
 .ptrnlib-toggle,
