@@ -139,6 +139,7 @@ module.exports = function(grunt) {
 
         var mergedData = _.assign( _.clone( templateData ), data );
         // template out the header
+        mergedData.sub = true;
         mergedData.header = processData.getMarkup( headerTemplate, mergedData );
 
         // full markup for pattern file
@@ -157,9 +158,6 @@ module.exports = function(grunt) {
 
       grunt.file.write(f.dest + '/' + indexName, html);
       grunt.log.writeln(chalk.green('>>') + ' Patterns HTML created at "' + f.dest + '/' + indexName + '".');
-
-      grunt.file.write(f.dest + '/patterns.json', processData.getJSON(patterns));
-      grunt.log.writeln(chalk.green('>>') + ' Patterns JSON created at "' + f.dest + '/patterns.json".');
 
       var includesArr = includes.processArray(options.include, f.include, f.blankCanvas );
 

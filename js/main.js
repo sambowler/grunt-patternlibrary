@@ -1,19 +1,14 @@
 (function() {
-    var patterns;
     var iframe = document.querySelector('.ptrnlib-content');
-    var getPatternJSON = $.getJSON('patterns.json');
     var currViewType, currPattern;
     var ptrnlibHandle = $('.ptrnlib-handle');
-    var ptrnlibBody = $('body.ptrnlib');
+    var ptrnlibHtml = $('html.ptrnlib');
     var ptrnlibToggle = $('.ptrnlib-toggle');
     var ptrnlibDetails = $('.ptrnlib-pattern__details');
 
-    getPatternJSON.then(function(data) {
-        patterns = data;
-    });
-
     function updateNav() {
-        document.querySelector('.ptrnlib-nav').value = window.location.pathname;
+        var current = window.location.pathname.match( /(patterns\/)?([^\/]+\.html$)/g )[0];
+        document.querySelector('.ptrnlib-nav option[value$="'+ current +'"]').setAttribute('selected', true);
     }
 
     $('.ptrnlib-nav').on('change', function() {
@@ -39,15 +34,15 @@
         if( window && window.localStorage ){
             var item = window.localStorage[ 'ptrnlib-' + name ];
             if( typeof item !== 'undefined' ) {
-                ptrnlibBody[ item === 'true' ? 'addClass' : 'removeClass' ]( name );
+                ptrnlibHtml[ item === 'true' ? 'addClass' : 'removeClass' ]( name );
             }
         }
     }
 
     getState( 'is-expanded' );
     getState( 'is-active' );
-    bindToggle( ptrnlibToggle, ptrnlibBody, 'is-expanded' );
-    bindToggle( ptrnlibHandle, ptrnlibBody, 'is-active' );
+    bindToggle( ptrnlibToggle, ptrnlibHtml, 'is-expanded' );
+    bindToggle( ptrnlibHandle, ptrnlibHtml, 'is-active' );
 
     updateNav();
 

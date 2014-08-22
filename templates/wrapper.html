@@ -1,8 +1,9 @@
 <!doctype html>
-<html>
+<html class="ptrnlib is-active">
   <head>
     <title><%= rootTitle %></title>
-    <base href="/patterns/">
+    <base href="<%if( typeof sub !== 'undefined' ){%>../<%}else{%>.<%}%>">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- No caching - stolen from http://pattern-lab.info -->
     <meta http-equiv="cache-control" content="max-age=0">
@@ -15,7 +16,7 @@
     <link rel="stylesheet" href="<%= stylesheet %>" />
     <% }); %>
   </head>
-  <body class="ptrnlib is-active">
+  <body>
     <%= content %>
 
     <footer role="contentinfo" class="ptrnlib-header">

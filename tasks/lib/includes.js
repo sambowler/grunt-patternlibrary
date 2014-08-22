@@ -45,8 +45,6 @@ module.exports = function(grunt) {
 
         grunt.log.writeln(chalk.green('>>') + ' Copied directory "' + srcFromGruntfile + '" to "' + dest + '".');
       }
-
-      // grunt.log.writeln('Copied "' + src + '" to "' + dest + '".');
     });
   }
 

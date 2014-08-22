@@ -20,6 +20,11 @@
     display: block;
 }
 
+.ptrnlib.is-active.is-expanded {
+    overflow: hidden;
+    height: 100%;
+}
+
 .ptrnlib-filter {
     width: 80%;
     padding: 10px;
