@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title><%= rootTitle %></title>
     <base href="/patterns/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- No caching - stolen from http://pattern-lab.info -->
@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="<%= stylesheet %>" />
     <% }); %>
   </head>
-  <body>
+  <body class="ptrnlib is-active">
     <%= content %>
 
-    <footer role="contentinfo" class="ptrnlib-header is-active">
+    <footer role="contentinfo" class="ptrnlib-header">
 
         <%= header %>
 

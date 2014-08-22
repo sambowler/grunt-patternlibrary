@@ -1,7 +1,25 @@
-body {
+.ptrnlib {
     margin: 0;
     padding-bottom: 60px;
 }
+.ptrnlib:after {
+    content: "";
+    display: none;
+    width: 100%;
+    height: 100%;
+    background: rgba( 0,0,0,0.5 );
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 0.3s ease;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.ptrnlib.is-active.is-expanded:after {
+    display: block;
+}
+
 .ptrnlib-filter {
     width: 80%;
     padding: 10px;
@@ -12,6 +30,7 @@ body {
 }
 
 .ptrnlib-header {
+    z-index: 200;
     width: 100%;
     border-top: solid 4px #eee;
     background-color: #fff;
@@ -30,12 +49,12 @@ body {
     font-size: 16px;
 }
 
-.ptrnlib-header.is-active {
+.ptrnlib.is-active .ptrnlib-header{
     opacity: 1;
     bottom: 0;
 }
 
-.ptrnlib-header.is-active.is-expanded {
+.ptrnlib.is-active.is-expanded .ptrnlib-header {
     height: 90%;
 }
 
@@ -72,7 +91,7 @@ body {
     transform: scale( 0.6 );
 }
 
-.ptrnlib-header.is-active .ptrnlib-handle:after {
+.ptrnlib.is-active .ptrnlib-handle:after {
     content: "▼";
 }
 
@@ -98,12 +117,12 @@ body {
     content: "+";
 }
 
-.ptrnlib-header.is-expanded .ptrnlib-toggle {
+.ptrnlib.is-expanded .ptrnlib-toggle {
     background: #ddd;
     color: #fff;
 }
 
-.ptrnlib-header.is-expanded .ptrnlib-toggle:before {
+.ptrnlib.is-expanded .ptrnlib-toggle:before {
     content: "×";
 }
 
@@ -164,7 +183,7 @@ body {
     width: 100%;
 }
 
-.ptrnlib-header.is-expanded .ptrnlib-pattern__details {
+.ptrnlib.is-expanded .ptrnlib-pattern__details {
     display: block;
     height: 90%;
     height: calc( 100% - 60px );

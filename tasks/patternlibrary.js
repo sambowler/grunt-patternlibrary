@@ -94,7 +94,7 @@ module.exports = function(grunt) {
        */
       var patterns = {};
       var templateData = {
-        title: f.title || options.title,
+        rootTitle: f.title || options.title,
         javascripts: javascripts,
         stylesheets: stylesheets
       };

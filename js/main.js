@@ -4,7 +4,7 @@
     var getPatternJSON = $.getJSON('patterns.json');
     var currViewType, currPattern;
     var ptrnlibHandle = $('.ptrnlib-handle');
-    var ptrnlibHeader = $('.ptrnlib-header');
+    var ptrnlibBody = $('body.ptrnlib');
     var ptrnlibToggle = $('.ptrnlib-toggle');
     var ptrnlibDetails = $('.ptrnlib-pattern__details');
 
@@ -27,8 +27,8 @@
         });
     }
 
-    bindToggle( ptrnlibToggle, ptrnlibHeader, 'is-expanded' );
-    bindToggle( ptrnlibHandle, ptrnlibHeader, 'is-active' );
+    bindToggle( ptrnlibToggle, ptrnlibBody, 'is-expanded' );
+    bindToggle( ptrnlibHandle, ptrnlibBody, 'is-active' );
 
     updateNav();
 
