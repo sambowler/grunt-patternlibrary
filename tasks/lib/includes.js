@@ -41,7 +41,7 @@ module.exports = function(grunt) {
           preserveFiles: false
         });
 
-        var srcFromGruntfile = src.split(process.cwd())[1].slice(1);
+        var srcFromGruntfile = ( src.indexOf( process.cwd() ) !== -1 ) ? src.split(process.cwd())[1].slice(1) : src;
 
         grunt.log.writeln(chalk.green('>>') + ' Copied directory "' + srcFromGruntfile + '" to "' + dest + '".');
       }
