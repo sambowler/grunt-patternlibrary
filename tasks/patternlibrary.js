@@ -61,6 +61,25 @@ module.exports = function(grunt) {
       var indexTemplate = f.indexTemplate || options.indexTemplate;
       var stylesheets = f.stylesheets ? options.stylesheets.concat(f.stylesheets) : options.stylesheets;
       var javascripts = f.javascripts ? options.javascripts.concat(f.javascripts) : options.javascripts;
+      javascripts = javascripts.map(function(script) {
+        if(typeof script === 'string') {
+          return '<script src="' + script + '"></script>';
+        }
+
+        if(typeof script === 'object') {
+          if(typeof script.src === 'undefined' || script.src === '') return false;
+
+          var str = '<script src="' + script.src + '"';
+
+          if(typeof script.attrs === 'object') {
+            for(var attr in script.attrs) {
+              str += ' ' + attr + '="' + script.attrs[attr] + '"';
+            }
+          }
+
+          return str + '></script>';
+        }
+      });
 
       /**
        *  @type {object} patterns
@@ -75,8 +94,11 @@ module.exports = function(grunt) {
        */
       var patterns = {};
       var templateData = {
-        title: f.title || options.title
+        title: f.title || options.title,
+        javascripts: javascripts,
+        stylesheets: stylesheets
       };
+
 
       f.src.filter(function(filepath) {
         if (!grunt.file.exists(filepath)) {
@@ -98,33 +120,40 @@ module.exports = function(grunt) {
         }
         return patternData;
       }).map( function( data ){
-        var markup;
-        if( typeof templateData.patterns === 'undefined' ) templateData.patterns = patterns;
-        if( typeof templateData.header === 'undefined' ) templateData.header = processData.getMarkup( headerTemplate, templateData );
+        /**
+         * @var {string} source - the html source of the base pattern
+         * @var {object} data - data for indevidual pattern
+         */
+        var source = data.content;
+        data.source = source;
 
-        data = _.defaults( { content: data.content, slug: data.slug, template: data.template, note: data.note }, templateData );
-        markup = processData.getMarkup( patternTemplate, data  );
-
+        // wrap pattern in template
         if( typeof data.template !== 'undefined' ){
-          markup = processData.getMarkup( 'patterns/templates/' + data.template + '.html', _.defaults( { content: markup }, data ) );
+          data.content = processData.getMarkup( 'patterns/templates/' + data.template + '.html', data );
         }
 
-        data.content = markup;
-        data.stylesheets = stylesheets;
-        data.javascripts = javascripts;
-        if( typeof data.note !== 'undefined' ) {
-          data.note = marked( data.note );
-        }
-        markup = processData.getMarkup( wrapperTemplate, _.defaults( data, templateData ) );
+        if( typeof data.note !== 'undefined' ) data.note = marked( data.note );
 
-        grunt.file.write(f.dest + '/patterns/' + data.slug + '.html', markup);
+        // list of all patterns needed for header
+        if( typeof templateData.patterns === 'undefined' ) { templateData.patterns = patterns; }
+
+        var mergedData = _.assign( _.clone( templateData ), data );
+        // template out the header
+        mergedData.header = processData.getMarkup( headerTemplate, mergedData );
+
+        // full markup for pattern file
+        data.content = processData.getMarkup( wrapperTemplate, mergedData );
+
+        grunt.file.write(f.dest + '/patterns/' + data.slug + '.html', data.content);
         grunt.log.writeln(chalk.green('>>') + ' Pattern HTML created at "' + f.dest + '/patterns/' + data.slug + '.html');
       });
-  
+
+
+      templateData.header = processData.getMarkup( headerTemplate, templateData );
       var indexContent = processData.getMarkup( indexTemplate, templateData );
       templateData.stylesheets = stylesheets;
       templateData.javascripts = javascripts;
-      var html = processData.getMarkup(wrapperTemplate, _.defaults( {content: indexContent}, templateData ) );
+      var html = processData.getMarkup(wrapperTemplate, _.assign( templateData, {content: indexContent} ) );
 
       grunt.file.write(f.dest + '/' + indexName, html);
       grunt.log.writeln(chalk.green('>>') + ' Patterns HTML created at "' + f.dest + '/' + indexName + '".');

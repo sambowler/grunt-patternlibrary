@@ -25,27 +25,6 @@ module.exports = function(grunt) {
    * @returns {string} - Markup for the wrapper
    */
   function getMarkup(template, data) {
-      if( typeof data.javascripts !== 'undefined' ){
-          data.javascripts = data.javascripts.map(function(script) {
-              if(typeof script === 'string') {
-                  return '<script src="' + script + '"></script>';
-              }
-
-              if(typeof script === 'object') {
-                  if(typeof script.src === 'undefined' || script.src === '') return false;
-
-                  var str = '<script src="' + script.src + '"';
-
-                  if(typeof script.attrs === 'object') {
-                      for(var attr in script.attrs) {
-                          str += ' ' + attr + '="' + script.attrs[attr] + '"';
-                      }
-                  }
-
-                  return str + '></script>';
-              }
-          });
-      }
 
       return grunt.template.process(grunt.file.read(template), { data: data });
   }

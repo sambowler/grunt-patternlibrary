@@ -151,19 +151,7 @@ body {
     margin-bottom: 30px;
 }
 
-.ptrnlib-overview-item h2 {
-    margin-top: 0;
-    position: relative;
-}
 
-.ptrnlib-overview-item h2 span {
-    color: #aaa;
-    font-size: 14px;
-    position: absolute;
-    right: 0;
-    bottom: 2px;
-    display: block;
-}
 
 .ptrnlib-pattern__overview *:last-child {
     margin-bottom: 0;
@@ -202,8 +190,59 @@ body {
     font-size: 14px;
 }
 
-.ptrnlib-overview-item {
+.ptrnlib-list,
+.ptrnlib-list ul {
+    margin: 0;
+    padding: 0;
+}
+
+
+.ptrnlib-list__item,
+.ptrnlib-list__category {
+    display: none;
+    font-size: 20px;
+}
+
+.ptrnlib-list__category {
+    border: solid 0 #eee;
+    border-width: 1px 0;
+}
+
+.ptrnlib-list__item.is-visible,
+.ptrnlib-list__category.is-visible {
     display: block;
+}
+
+.ptrnlib-list__category .ptrnlib-list__link {
+    padding-left: 45px;
+}
+
+.ptrnlib-list__category div,
+.ptrnlib-list__link {
+    padding: 15px;
+}
+
+.ptrnlib-list__link {
+    display: block;
+}
+
+.ptrnlib-list__category.is-visible {
+    display: block;
+}
+.ptrnlib-list__item.is-visible {
+    display: block;
+    opacity: 1;
+     -webkit-animation: patternShow 0.35s ease;
+    animation: patternShow 0.35s ease-out;
+}
+
+.ptrnlib-list__link:hover {
+    background-color: #f6f6f6;
+    transition: 0.3s ease-out;
+}
+
+.ptrnlib-overview-item {
+    display: none;
     padding: 15px;
     border-bottom: 1px solid #eee;
     font-family: sans-serif;
@@ -214,6 +253,28 @@ body {
 .ptrnlib-overview-item:hover {
     background-color: #f8f8f8;
 }
+
+.ptrnlib-overview-item.is-visible {
+    display: block;
+    opacity: 1;
+     -webkit-animation: patternShow 0.35s ease;
+    animation: patternShow 0.35s ease-out;
+}
+
+.ptrnlib-overview-item h2 {
+    margin-top: 0;
+    position: relative;
+}
+
+.ptrnlib-overview-item h2 span {
+    color: #aaa;
+    font-size: 14px;
+    position: absolute;
+    right: 0;
+    bottom: 2px;
+    display: block;
+}
+
 
 .ptrnlib-overview-item h2 {
     margin-top: 0;
@@ -265,5 +326,23 @@ body {
     .ptrnlib-header__inner .ptrnlib-nav,
     .ptrnlib-header__inner .ptrnlib-toggle {
 
+    }
+}
+
+@-webkit-keyframes patternShow {
+    from {
+        opacity: 0.001;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes patternShow {
+    from {
+        opacity: 0.001;
+    }
+    to {
+        opacity: 1;
     }
 }

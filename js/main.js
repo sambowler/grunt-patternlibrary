@@ -32,12 +32,19 @@
 
     updateNav();
 
-    $('#ptrnlib-filter').on('keyup', function(){
-        if($('#ptrnlib-filter').val() !== ''){
-            $('.ptrnlib-overview-item').hide().filter('[data-slug*=' + $('#ptrnlib-filter').val().toLowerCase() + ']').show();
-        } else {
-            $('.ptrnlib-overview-item').show();
-        }
-    });
+    (function(){
+        var filter = $('#ptrnlib-filter'),
+            items = $('.ptrnlib-list__item'),
+            categories = $('.ptrnlib-list__category'),
+            visibleClass = 'is-visible';
+
+        filter.on('keyup', function(){
+            var val = filter.val();
+            items.removeClass( visibleClass ).filter( ( val !== '' ) ? '[data-slug*=' + val.toLowerCase() + ']' : '*').addClass( visibleClass );
+            categories.removeClass( visibleClass ).filter( function(){ 
+               return $( this ).find( '.' + visibleClass ).length ? true : false;
+            }).addClass( visibleClass );
+        });
+    })();
 
 })();
