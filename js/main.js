@@ -7,8 +7,10 @@
     var ptrnlibDetails = $('.ptrnlib-pattern__details');
 
     function updateNav() {
-        var current = window.location.pathname.match( /(patterns\/)?([^\/]+\.html$)/g )[0];
-        document.querySelector('.ptrnlib-nav option[value$="'+ current +'"]').setAttribute('selected', true);
+        var current = window.location.pathname.match( /(patterns\/)?([^\/]+\.html$)/g );
+        if( current !==  null && document.querySelector('.ptrnlib-nav option[value$="'+ current[0] +'"]') !== null ){
+            document.querySelector('.ptrnlib-nav option[value$="'+ current[0] +'"]').setAttribute('selected', true);
+        }
     }
 
     $('.ptrnlib-nav').on('change', function() {
@@ -55,7 +57,7 @@
         filter.on('keyup', function(){
             var val = filter.val();
             items.removeClass( visibleClass ).filter( ( val !== '' ) ? '[data-slug*=' + val.toLowerCase() + ']' : '*').addClass( visibleClass );
-            categories.removeClass( visibleClass ).filter( function(){ 
+            categories.removeClass( visibleClass ).filter( function(){
                return $( this ).find( '.' + visibleClass ).length ? true : false;
             }).addClass( visibleClass );
         });
