@@ -27,14 +27,14 @@ module.exports = function(grunt) {
   defaults.indexName = 'index.html';
   defaults.title = 'Pattern Library';
   defaults.stylesheets = [
-    'css/prism.css',
-    'css/style.css'
+    '/patterns/css/prism.css',
+    '/patterns/css/style.css'
   ];
   defaults.javascripts = [
-    'js/jquery.min.js',
-    'js/prism.js',
-    'js/path.min.js',
-    'js/main.js'
+    '/patterns/js/jquery.min.js',
+    '/patterns/js/prism.js',
+    '/patterns/js/path.min.js',
+    '/patterns/js/main.js'
   ];
   defaults.include = [
     {
@@ -61,6 +61,7 @@ module.exports = function(grunt) {
       var indexTemplate = f.indexTemplate || options.indexTemplate;
       var stylesheets = f.stylesheets ? options.stylesheets.concat(f.stylesheets) : options.stylesheets;
       var javascripts = f.javascripts ? options.javascripts.concat(f.javascripts) : options.javascripts;
+
       javascripts = javascripts.map(function(script) {
         if(typeof script === 'string') {
           return '<script src="' + script + '"></script>';
@@ -93,6 +94,7 @@ module.exports = function(grunt) {
        *  }
        */
       var patterns = {};
+
       var templateData = {
         rootTitle: f.title || options.title,
         javascripts: javascripts,
@@ -109,6 +111,8 @@ module.exports = function(grunt) {
         }
       }).map(function(path) {
         var patternData = pattern.processPatternData( path );
+
+
         if( typeof patternData.category !== 'undefined' ){
           if( typeof patterns[ patternData.category ] !== 'undefined' ) {
             patterns[ patternData.category ].patterns.push( patternData );
@@ -126,6 +130,11 @@ module.exports = function(grunt) {
          */
         var source = data.content;
         data.source = source;
+
+        data.status = ( typeof data.status === 'undefined' || data.status === 'not-started' ) ? 'not-started' : data.status;
+        data.statusName = data.status.replace('-',' ').replace( /\w\S*/g, function( match ){
+            return match.charAt(0).toUpperCase() + match.substr(1);
+        });
 
         // wrap pattern in template
         if( typeof data.template !== 'undefined' ){

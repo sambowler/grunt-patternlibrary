@@ -1,66 +1,55 @@
+/*global $*/
 (function() {
-    var iframe = document.querySelector('.ptrnlib-content');
-    var currViewType, currPattern;
-    var ptrnlibHandle = $('.ptrnlib-handle');
-    var ptrnlibHtml = $('html.ptrnlib');
-    var ptrnlibToggle = $('.ptrnlib-toggle');
-    var ptrnlibDetails = $('.ptrnlib-pattern__details');
+    var ptrnlibHtml = $('html.ptrnlib'),
+        ptrnlibToggle = $('.ptrnlib-toggle'),
+        ptrnlibBody = $('body')
 
-    function updateNav() {
-        var current = window.location.pathname.match( /(patterns\/)?([^\/]+\.html$)/g );
-        if( current !==  null && document.querySelector('.ptrnlib-nav option[value$="'+ current[0] +'"]') !== null ){
-            document.querySelector('.ptrnlib-nav option[value$="'+ current[0] +'"]').setAttribute('selected', true);
-        }
-    }
+        // sets select element to current pattern
+        ptrnlibUpdateNav = function(){
+            var current = window.location.pathname.match( /(patterns\/)?([^\/]+\.html$)/g );
+            if( current !==  null && document.querySelector('.ptrnlib-nav option[value$="'+ current[0] +'"]') !== null ){
+                document.querySelector('.ptrnlib-nav option[value$="'+ current[0] +'"]').setAttribute('selected', true);
+            }
+        };
 
     $('.ptrnlib-nav').on('change', function() {
-        window.location.href = this.value;
+        window.location.href = '/patterns/' + this.value;
     });
 
-    function bindToggle( trigger, target, activeClass ){
-        trigger.on('click', function(){
-            var test = target.hasClass( activeClass );
-            target[ test ? 'removeClass' : 'addClass' ]( activeClass );
-            setState( 'ptrnlib-' + activeClass, !test );
-            return false;
-        });
-    }
+    // toggle is-expanded on <html>
+    ptrnlibToggle.on('click', function(){
+        var test = ptrnlibHtml.hasClass( 'is-expanded' );
+        ptrnlibHtml[ test ? 'removeClass' : 'addClass' ]( 'is-expanded' );
+        return false;
+    });
 
-    function setState( key, state ){
-        if( window && window.localStorage ){
-            window.localStorage[ key ] = state;
-        }
-    }
+    // close expanded on overlay click
+    ptrnlibHtml.on('click', function( e ){
+        if ( e.target.nodeName !== 'HTML' ) return;
+        ptrnlibHtml.removeClass( 'is-expanded' );
+    });
 
-    function getState( name ){
-        if( window && window.localStorage ){
-            var item = window.localStorage[ 'ptrnlib-' + name ];
-            if( typeof item !== 'undefined' ) {
-                ptrnlibHtml[ item === 'true' ? 'addClass' : 'removeClass' ]( name );
-            }
-        }
-    }
+    ptrnlibUpdateNav();
+})();
 
-    getState( 'is-expanded' );
-    getState( 'is-active' );
-    bindToggle( ptrnlibToggle, ptrnlibHtml, 'is-expanded' );
-    bindToggle( ptrnlibHandle, ptrnlibHtml, 'is-active' );
 
-    updateNav();
+(function(){
+    var filter = $('#ptrnlib-filter'),
+    items = $('.ptrnlib-list__item'),
+    categories = $('.ptrnlib-list__category'),
+    visibleClass = 'is-visible';
 
-    (function(){
-        var filter = $('#ptrnlib-filter'),
-            items = $('.ptrnlib-list__item'),
-            categories = $('.ptrnlib-list__category'),
-            visibleClass = 'is-visible';
+    filter.on('keyup', function(){
+        var val = filter.val();
 
-        filter.on('keyup', function(){
-            var val = filter.val();
-            items.removeClass( visibleClass ).filter( ( val !== '' ) ? '[data-slug*=' + val.toLowerCase() + ']' : '*').addClass( visibleClass );
-            categories.removeClass( visibleClass ).filter( function(){
-               return $( this ).find( '.' + visibleClass ).length ? true : false;
-            }).addClass( visibleClass );
-        });
-    })();
+        // add visible class to elements that have data-slug matching val
+        items.removeClass( visibleClass ).filter(function(){
+            return ( val === '' ) ? true : $(this).is( '[data-slug*=' + val.toLowerCase() + '], [data-status=' + val.toLowerCase() + ']' );
+        }).addClass( visibleClass );
 
+        // only show categories that contain matching elements
+        categories.removeClass( visibleClass ).filter( function(){
+            return $( this ).find( '.' + visibleClass ).length ? true : false;
+        }).addClass( visibleClass );
+    });
 })();

@@ -1,26 +1,37 @@
 <input type="text" id="ptrnlib-filter" class="ptrnlib-filter" placeholder="filter patterns"/>
 <div class="ptrnlib-container">
-
     <ul class="ptrnlib-list">
     <% _.forOwn(patterns, function(pattern) {
-    if( typeof pattern.category !== 'undefined' && pattern.category === true ){ %>
-        <li class="ptrnlib-list__category is-visible">
-            <div><%= pattern.title %></div>
-            <ul class="ptrnlib-list">
-                <% _.forEach(pattern.patterns, function(pattern) { %>
-                <li class="ptrnlib-list__item is-visible" data-slug="<%= pattern.slug %>">
-                    <a class="ptrnlib-list__link"  href="patterns/<%= pattern.slug %>.html"><%= pattern.title %></a>
-                </li>
-                <% }); %>
-            </ul>
-        </li>
-    <% } else { %>
-    <li class="ptrnlib-list__item is-visible" data-slug="<%= pattern.slug %>">
-        <a class="ptrnlib-list__link"  href="patterns/<%= pattern.slug %>.html">
-            <%= pattern.title %> <% if( typeof pattern.category !== 'undefined' ) {%><span> in <%= pattern.category %></span><%} %>
-        </a>
-    </li>
-    <% }
+
+        if( typeof pattern.category !== 'undefined' && pattern.category === true ){ %>
+
+            <!-- the item is a category; output header and loop over patterns -->
+            <li class="ptrnlib-list__category is-visible">
+                <div><%= pattern.title %></div>
+                <ul class="ptrnlib-list">
+                    <% _.forEach(pattern.patterns, function(pattern) { %>
+                    <li class="ptrnlib-list__item is-visible" data-slug="<%= pattern.slug %>" data-status="<%= pattern.status %>">
+                        <a class="ptrnlib-list__link"  href="/patterns/patterns/<%= pattern.slug %>.html">
+                            <%= pattern.title %>
+                            <span title="<%= pattern.statusName %>" class="ptrnlib-status ptrnlib-status--<%= pattern.status %>"><%= pattern.statusName %></span>
+                        </a>
+                    </li>
+                    <% }); %>
+                </ul>
+            </li>
+
+        <% } else { %>
+
+            <!-- standard item output -->
+            <li class="ptrnlib-list__item is-visible" data-slug="<%= pattern.slug %>"  data-status="<%= pattern.status %>">
+                <a class="ptrnlib-list__link"  href="/patterns/patterns/<%= pattern.slug %>.html">
+                    <%= pattern.title %>
+                    <span title="<%= pattern.statusName %>" class="ptrnlib-status ptrnlib-status--<%= pattern.status %>"><%= pattern.statusName %></span>
+                </a>
+            </li>
+
+        <% }
+
     }); %>
     </ul>
 </div>

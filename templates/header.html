@@ -1,5 +1,4 @@
 <div class="ptrnlib-header__inner">
-    <a class="ptrnlib-handle" href="#details">toggle details</a>
     <h1 class="ptrnlib-h1"><a href="/patterns/"><%= rootTitle %></a></h1>
 
     <select class="ptrnlib-nav">
@@ -19,5 +18,9 @@
 
     <% if( typeof note !== 'undefined' || typeof source !== 'undefined' ) { %>
     <a class="ptrnlib-toggle" href="#ptrnlib-docs">Details</a>
+    <% } %>
+
+    <% if( typeof statusName !== 'undefined' ) { %>
+        <span title="<%= statusName %>" class="ptrnlib-header__status ptrnlib-status ptrnlib-status--<%= status %>"><%= statusName %></span>
     <% } %>
 </div>
