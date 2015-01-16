@@ -1,16 +1,3 @@
 <div class="ptrnlib-pattern" id="ptrnlib-<%= slug %>">
-    <div class="ptrnlib-pattern__overview">
-        <h2><%= title %></h2>
-        <% if(typeof note !== 'undefined') { %>
-            <p><strong>Usage note:</strong> <%= note %></p>
-        <% } %>
-    </div>
-
-    <div class="ptrnlib-pattern__output">
-        <%= content %>
-    </div>
-
-    <div class="ptrnlib-pattern__markup">
-        <pre class="source"><code class="language-markup"><%- content %></code></pre>
-    </div>
+    <%= content %>
 </div>

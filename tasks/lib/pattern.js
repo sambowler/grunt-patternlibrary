@@ -28,40 +28,32 @@ module.exports = function(grunt) {
    * Processes passed data in to an object of data about the pattern
    *
    * @param {String} path - Path to the pattern's HTML
-   * @param {String} templatePath - Path to the template to be used to process
    * the path data with
    *
    * @returns {object} Object of data about the processed pattern
    */
-  function processPattern(path, templatePath) {
+  function processPatternData( path ){
     var fileContents = grunt.file.read(path);
     var frontMatter = yamlFrontMatter.loadFront(fileContents);
+    var initData = {
+      content: frontMatter.__content.trim(),
+      slug: getPatternSlug(path, frontMatter)
+    };
 
     if(typeof frontMatter.title === 'undefined') {
       grunt.log.warn('"' + path + '" doesn\'t have a title -- ignoring this file.');
       return false;
     }
 
-    var template = grunt.file.read(templatePath);
-    var data = {
-      content: frontMatter.__content.trim(),
-      slug: getPatternSlug(path, frontMatter)
-    };
+    var data = _.merge( initData, ( typeof arguments[2] !== "undefined" ) ? arguments[2] : {} );
 
     delete frontMatter.slug;
     delete frontMatter.__content;
 
     // Carry the rest of the front matter data to the object
-    data = _.defaults(data, frontMatter);
-
-    data.html = grunt.template.process(template, { data: data });
-
-    grunt.log.writeln(chalk.green('>>') + ' Processed pattern "' + path + '".');
-
-    return data;
+    return _.defaults(data, frontMatter);
   }
-
   return {
-    processPattern: processPattern
+    processPatternData: processPatternData
   };
 };

@@ -5,13 +5,13 @@ module.exports = function(grunt) {
   var wrench = require('wrench');
   var chalk = require('chalk');
 
-  function processArray(defaults, customArr, blankCanvas, usingDefaultWrapperTemplate) {
+  function processArray(defaults, customArr, blankCanvas ) {
     customArr = customArr || [];
 
     if(blankCanvas) {
         return customArr;
     } else {
-        return usingDefaultWrapperTemplate ? defaults.concat(customArr) : customArr;
+        return defaults.concat(customArr);
     }
   }
 
@@ -41,12 +41,10 @@ module.exports = function(grunt) {
           preserveFiles: false
         });
 
-        var srcFromGruntfile = src.split(process.cwd())[1].slice(1);
+        var srcFromGruntfile = ( src.indexOf( process.cwd() ) !== -1 ) ? src.split(process.cwd())[1].slice(1) : src;
 
         grunt.log.writeln(chalk.green('>>') + ' Copied directory "' + srcFromGruntfile + '" to "' + dest + '".');
       }
-
-      // grunt.log.writeln('Copied "' + src + '" to "' + dest + '".');
     });
   }
 

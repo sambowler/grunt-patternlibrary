@@ -1,0 +1,26 @@
+<div class="ptrnlib-header__inner">
+    <h1 class="ptrnlib-h1"><a href="/patterns/"><%= rootTitle %></a></h1>
+
+    <select class="ptrnlib-nav">
+        <option value="index.html">Pattern Index</option>
+        <% _.forOwn(patterns, function(pattern) {
+        if( typeof pattern.category !== 'undefined' && pattern.category === true ){ %>
+        <optgroup label="<%= pattern.title %>">
+            <% _.forEach(pattern.patterns, function(pattern) { %>
+            <option value="patterns/<%= pattern.slug %>.html"><%= pattern.title %></option>
+            <% }); %>
+        </optgroup>
+        <% } else { %>
+        <option value="patterns/<%= pattern.slug %>.html"><%= pattern.title %></option>
+        <% }
+        }); %>
+    </select>
+
+    <% if( typeof note !== 'undefined' || typeof source !== 'undefined' ) { %>
+    <a class="ptrnlib-toggle" href="#ptrnlib-docs">Details</a>
+    <% } %>
+
+    <% if( typeof statusName !== 'undefined' ) { %>
+        <span title="<%= statusName %>" class="ptrnlib-header__status ptrnlib-status ptrnlib-status--<%= status %>"><%= statusName %></span>
+    <% } %>
+</div>
