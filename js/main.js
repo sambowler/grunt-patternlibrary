@@ -1,93 +1,55 @@
+/*global $*/
 (function() {
-  var activeClass = 'is-active';
-  var patterns;
-  var iframe = document.querySelector('.ptrnlib-content');
-  var getPatternJSON = $.getJSON('patterns.json');
-  var currViewType, currPattern;
+    var ptrnlibHtml = $('html.ptrnlib'),
+        ptrnlibToggle = $('.ptrnlib-toggle'),
+        ptrnlibBody = $('body')
 
-  getPatternJSON.then(function(data) {
-    patterns = data;
-  });
+        // sets select element to current pattern
+        ptrnlibUpdateNav = function(){
+            var current = window.location.pathname.match( /(patterns\/)?([^\/]+\.html$)/g );
+            if( current !==  null && document.querySelector('.ptrnlib-nav option[value$="'+ current[0] +'"]') !== null ){
+                document.querySelector('.ptrnlib-nav option[value$="'+ current[0] +'"]').setAttribute('selected', true);
+            }
+        };
 
-  function updateNav(value) {
-    document.querySelector('.ptrnlib-nav').value = '#/' + value;
-  }
+    $('.ptrnlib-nav').on('change', function() {
+        window.location.href = '/patterns/' + this.value;
+    });
 
-  function changeVisiblePattern(patternName) {
-    $('.ptrnlib-overview').removeClass(activeClass);
-    $('.ptrnlib-pattern').removeClass(activeClass);
+    // toggle is-expanded on <html>
+    ptrnlibToggle.on('click', function(){
+        var test = ptrnlibHtml.hasClass( 'is-expanded' );
+        ptrnlibHtml[ test ? 'removeClass' : 'addClass' ]( 'is-expanded' );
+        return false;
+    });
 
-    var pattern = document.getElementById('ptrnlib-' + patternName);
+    // close expanded on overlay click
+    ptrnlibHtml.on('click', function( e ){
+        if ( e.target.nodeName !== 'HTML' ) return;
+        ptrnlibHtml.removeClass( 'is-expanded' );
+    });
 
-    $(pattern).addClass(activeClass);
+    ptrnlibUpdateNav();
+})();
 
-    updateNav(patternName);
 
-    $('body').addClass('is-pattern-page');
-  }
+(function(){
+    var filter = $('#ptrnlib-filter'),
+    items = $('.ptrnlib-list__item'),
+    categories = $('.ptrnlib-list__category'),
+    visibleClass = 'is-visible';
 
-  function changeViewType(newType) {
-    var types = ['simple', 'detailed'];
-    var $body = $('body');
+    filter.on('keyup', function(){
+        var val = filter.val();
 
-    for(var i = 0; i < types.length; i++) {
-      var klass = 'is-' + types[i] + '-view';
+        // add visible class to elements that have data-slug matching val
+        items.removeClass( visibleClass ).filter(function(){
+            return ( val === '' ) ? true : $(this).is( '[data-slug*=' + val.toLowerCase() + '], [data-status=' + val.toLowerCase() + ']' );
+        }).addClass( visibleClass );
 
-      if(types[i] === newType) {
-        $body.addClass(klass);
-
-        document.querySelector('.ptrnlib-view-type').value = types[i];
-      } else {
-        $body.removeClass(klass);
-      }
-    }
-
-    currViewType = newType;
-  }
-
-  Path.root('#/');
-
-  Path.map('#/').to(function() {
-    $('body').removeClass('is-pattern-page is-simple-view is-detailed-view');
-    $('body').addClass('is-pattern-listing');
-    $('.ptrnlib-overview').addClass(activeClass);
-    $('.ptrnlib-pattern').removeClass(activeClass);
-
-    updateNav('');
-  }).exit(function() {
-    $('body').removeClass('is-pattern-listing');
-  });
-
-  Path.map('#/:name(/:view)').to(function() {
-    var patternName = this.params.name;
-    if(typeof this.params.view === 'undefined' ) {
-        window.location.href = '#/' + patternName + '/' + document.querySelector('.ptrnlib-view-type').value;
-    } else {
-        changeViewType(this.params.view);
-    }
-
-    if(typeof patterns === 'undefined') {
-      getPatternJSON.done(function() {
-        changeVisiblePattern(patternName);
-      });
-    } else {
-      changeVisiblePattern(patternName);
-    }
-
-    currPattern = patternName;
-  });
-
-  Path.listen();
-
-  $('.ptrnlib-nav').on('change', function() {
-    var path = this.value;
-
-    if(!path) path = '#/';
-
-    window.location.href = path;
-  });
-
-  $('.ptrnlib-view-type').on('change', function() {
-    window.location.href = '#/' + currPattern + '/' + this.value;
-  });
+        // only show categories that contain matching elements
+        categories.removeClass( visibleClass ).filter( function(){
+            return $( this ).find( '.' + visibleClass ).length ? true : false;
+        }).addClass( visibleClass );
+    });
 })();
