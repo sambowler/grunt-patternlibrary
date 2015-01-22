@@ -81,6 +81,45 @@ grunt.initConfig({
 });
 ```
 
+##Patterns
+Each HTML file found by the `src` path can be considered a *pattern*
+
+The Pattern file supports 'YAML frontmatter' that allows data added at the top of the file to be used by the patternlibrary, it looks something like this:
+
+```yml
+---
+	title: Headings
+---
+```
+
+anything between the tripple-dashed lines will be parsed as [YAML](http://www.yaml.org/)
+
+The patternlibrary supports the following options;
+
+| Option | Description |
+:---|:---
+| `title` | The only **required** variable, it is used as the pattern name within the ui
+| `status` | By default; displays an icon next to the pattern entry that denotes its progress.<br>Supported values: `not-started` `in-progress` `done`
+| `category` | If set; creates a category that can be associated with one or many patterns (by adding the same value to multiple patterns) to form logical groups within the ui
+| `template` | If set; uses the specified html file to wrap the pattern without including it in the source output. Use [EJS](http://www.embeddedjs.com/) to add the pattern content to each template: `<%= content %>`
+| `notes` | Allows the addition of markdown enhanced documentation to the pattern. Note: to preserve newlines in yaml; use a pipe character followed by the multi-line content [example](https://gist.github.com/rjattrill/7523554)
+
+A full example of a pattern's frontmatter:
+
+```yml
+---
+	title: Headings
+	status: done
+	category: Text
+	template: content-box
+	notes: |
+		**heading styles** for user editted content throughout the site
+---
+```
+
+
+
+
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
