@@ -71,11 +71,11 @@ grunt.initConfig({
       // Path to your individual pattern HTML files
       src: 'patterns/src/**/*.html',
 
-      // Path to a custom template for individual patterns
-      patternTemplate: 'patterns/patternTemplate.html',
-
       // Path to a custom template for the wrapper around the patterns
-      wrapperTemplate: 'patterns/wrapperTemplate.html'
+      wrapperTemplate: 'patterns/wrapperTemplate.html',
+      
+      // Path to templates
+      templateSrc: 'patters/templates'
     }
   }
 });
@@ -101,7 +101,7 @@ The patternlibrary supports the following options;
 | `title` | The only **required** variable, it is used as the pattern name within the ui
 | `status` | By default; displays an icon next to the pattern entry that denotes its progress.<br>Supported values: `not-started` `in-progress` `done`
 | `category` | If set; creates a category that can be associated with one or many patterns (by adding the same value to multiple patterns) to form logical groups within the ui
-| `template` | If set; uses the specified html file to wrap the pattern without including it in the source output. Use [EJS](http://www.embeddedjs.com/) to add the pattern content to each template: `<%= content %>`
+| `template` | If set; uses the specified html file to wrap the pattern without including it in the source output. Use [EJS](http://www.embeddedjs.com/) to add the pattern content to each template: `<%= content %>` (see [Templates](#templates))
 | `notes` | Allows the addition of markdown enhanced documentation to the pattern. Note: to preserve newlines in yaml; use a pipe character followed by the multi-line content [example](https://gist.github.com/rjattrill/7523554)
 
 A full example of a pattern's frontmatter:
@@ -117,8 +117,46 @@ A full example of a pattern's frontmatter:
 ---
 ```
 
+## Wrapper Template
+The wrapper template is the base HTML for the patternlibrary. (see [default wrapper](https://github.com/sambowler/grunt-patternlibrary/blob/master/templates/wrapper.html)) 
+
+This option can be used when you need more flexibility than custom js + css afford.
+
+Variables available to the wrapper template:
+
+| Variable | Description |
+:---|:---
+| `rootTitle` | *String* (default *Pattern Library*) used in the header and `<title>`
+| `javascripts` | *Array* default script tags extended by options.
+| `stylesheets` | *Array* default css locations extended by options
+| `patterns` | *Object* contains named key for each pattern (see below)
+
+```js
+patterns: {
+	"News Listing" : {
+		title: "News Listing",
+		slug: "news-listing",
+		template: "sidebar",
+		content: //full html content
+	},
+	...
+}
+```
 
 
+## Templates
+
+Reusable markup that wraps a pattern to give visual context but doesn't show in the source markup for the pattern.
+
+example `templates/sidebar.html`
+
+```html
+<aside class="sidebar">
+	<div class="sidebar__inner">
+		<%= content %>
+	</div>
+</aside>
+```
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
