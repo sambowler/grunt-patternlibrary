@@ -21,9 +21,9 @@ module.exports = function(grunt) {
   var defaults = {};
 
   defaults.wrapperTemplate = pluginRoot + '/templates/wrapper.html';
-  defaults.patternTemplate = pluginRoot + '/templates/pattern.html';
   defaults.indexTemplate = pluginRoot + '/templates/index.html';
   defaults.headerTemplate = pluginRoot + '/templates/header.html';
+  defaults.templateSrc = 'patterns/templates';
   defaults.indexName = 'index.html';
   defaults.title = 'Pattern Library';
   defaults.stylesheets = [
@@ -56,9 +56,9 @@ module.exports = function(grunt) {
       }
       var indexName = f.indexName || options.indexName;
       var wrapperTemplate = f.wrapperTemplate || options.wrapperTemplate;
-      var patternTemplate = f.patternTemplate || options.patternTemplate;
       var headerTemplate = f.headerTemplate || options.headerTemplate;
       var indexTemplate = f.indexTemplate || options.indexTemplate;
+      var templateSrc = f.templateSrc || options.templateSrc;
       var stylesheets = f.stylesheets ? options.stylesheets.concat(f.stylesheets) : options.stylesheets;
       var javascripts = f.javascripts ? options.javascripts.concat(f.javascripts) : options.javascripts;
 
@@ -129,6 +129,7 @@ module.exports = function(grunt) {
          * @var {object} data - data for indevidual pattern
          */
         var source = data.content;
+        var currentTemplate = templateSrc + '/' + data.template + '.html';
         data.source = source;
 
         data.status = ( typeof data.status === 'undefined' || data.status === 'not-started' ) ? 'not-started' : data.status;
@@ -137,8 +138,12 @@ module.exports = function(grunt) {
         });
 
         // wrap pattern in template
-        if( typeof data.template !== 'undefined' ){
-          data.content = processData.getMarkup( 'patterns/templates/' + data.template + '.html', data );
+        if( data.template ){
+          if( grunt.file.exists( currentTemplate ) ){
+            data.content = processData.getMarkup( currentTemplate );
+          } else {
+            grunt.fail.warn( 'Unable to read template file ' + currentTemplate + '\nHas templateSrc been defined correctly?', 6 );
+          }
         }
 
         if( typeof data.note !== 'undefined' ) data.note = marked( data.note );
