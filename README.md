@@ -73,7 +73,7 @@ grunt.initConfig({
 | `blankCanvas` | If this is set to true, none of grunt-patternlibrary's built in CSS or JS will be brought through to the output
 | `title` | Title for the pattern library, used in the `<title>` and pattern library header.
 | `include` | Additional files to copy into pattern library build folder (these can be used in the `stylesheets` and `javascripts` options above by referencing the `dest` location)
-| `src` | Path to your individual pattern HTML files (see [Patterns](#Patterns))
+| `src` | Path to your individual pattern HTML files (see [Patterns](#patterns))
 | `wrapperTemplate` | Path to a custom template for the wrapper around the patterns (see [Wrapper Template](#wrapper-template))
 | `templateSrc` |  Path to template files (see [Templates](#templates))
 
