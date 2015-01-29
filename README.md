@@ -37,29 +37,18 @@ No task-wide options
 
 #### Custom Options
 
+#####Example:
+
 ```js
 grunt.initConfig({
   patternlibrary: {
     patterns: {
-      // Destination folder for the generated pattern library to be saved in
       dest: 'patterns/dist',
-
-      // Name of the index HTML file that is generated (default: "index.html")
       indexName: 'foobar.html',
-
-      // Stylesheets to include on the page (path relative to "dest") -- will be output in sequential order in the HEAD of the document
       stylesheets: [ 'stylesheet1.css', 'stylesheet2.css' ],
-
-      // JavaScripts to include on the page (path relative to "dest") -- wil be output in sequential order at the bottom of the BODY tag in the document
       javascripts: [ 'script1.js', 'script2.js' ],
-
-      // If this is set to true, none of grunt-patternlibrary's built in CSS or JS will be brought through to the output (optional)
       blankCanvas: true
-
-      // Title for the pattern library
       title: 'My Pattern Library',
-
-      // Additional files to include (these can be referenced in the "stylesheets" and "javascripts" options above)
       include: [
         {
           src: 'some-folder/style.css',
@@ -67,19 +56,27 @@ grunt.initConfig({
           dest: 'css/my-styles.css'
         }
       ],
-
-      // Path to your individual pattern HTML files
       src: 'patterns/src/**/*.html',
-
-      // Path to a custom template for the wrapper around the patterns
       wrapperTemplate: 'patterns/wrapperTemplate.html',
-      
-      // Path to templates
-      templateSrc: 'patters/templates'
+      templateSrc: 'patterns/templates'
     }
   }
 });
 ```
+
+| Option | Description |
+:---|:---
+| `dest` | Destination folder for the generated pattern library to be saved in
+| `indexName` | Name of the index HTML file that is generated (default: "index.html")
+| `stylesheets` | Stylesheets to include on the page (path relative to `dest`) -- will be output in sequential order in the `<head>` of the document
+| `javascripts` | JavaScripts to include on the page (path relative to `dest`) -- wil be output in sequential order at the bottom of the `<body>` tag in the document
+| `blankCanvas` | If this is set to true, none of grunt-patternlibrary's built in CSS or JS will be brought through to the output
+| `title` | Title for the pattern library, used in the `<title>` and pattern library header.
+| `include` | Additional files to copy into pattern library build folder (these can be used in the `stylesheets` and `javascripts` options above by referencing the `dest` location)
+| `src` | Path to your individual pattern HTML files (see [Patterns](#Patterns))
+| `wrapperTemplate` | Path to a custom template for the wrapper around the patterns (see [Wrapper Template](#wrapper-template))
+| `templateSrc` |  Path to template files (see [Templates](#templates))
+
 
 ##Patterns
 Each HTML file found by the `src` path can be considered a *pattern*
@@ -113,7 +110,7 @@ A full example of a pattern's frontmatter:
 	category: Text
 	template: content-box
 	notes: |
-		**heading styles** for user editted content throughout the site
+		**heading styles** for user edited content throughout the site
 ---
 ```
 
