@@ -99,7 +99,7 @@ The patternlibrary supports the following options;
 | `status` | By default; displays an icon next to the pattern entry that denotes its progress.<br>Supported values: `not-started` `in-progress` `done`
 | `category` | If set; creates a category that can be associated with one or many patterns (by adding the same value to multiple patterns) to form logical groups within the ui
 | `template` | If set; uses the specified html file to wrap the pattern without including it in the source output. Use [EJS](http://www.embeddedjs.com/) to add the pattern content to each template: `<%= content %>` (see [Templates](#templates))
-| `notes` | Allows the addition of markdown enhanced documentation to the pattern. Note: to preserve newlines in yaml; use a pipe character followed by the multi-line content [example](https://gist.github.com/rjattrill/7523554)
+| `note` | Allows the addition of markdown enhanced documentation to the pattern. Note: to preserve newlines in yaml; use a pipe character followed by the multi-line content [example](https://gist.github.com/rjattrill/7523554)
 
 A full example of a pattern's frontmatter:
 
@@ -109,7 +109,7 @@ A full example of a pattern's frontmatter:
 	status: done
 	category: Text
 	template: content-box
-	notes: |
+	note: |
 		**heading styles** for user edited content throughout the site
 ---
 ```
